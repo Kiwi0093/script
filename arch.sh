@@ -66,37 +66,37 @@ do
 	1)
 		echo -e "${COLOR2}Linux Kernel＋Intel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools vim net-tools
+		pacstrap /mnt base linux linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools vim net-tools openssh
 		break
 		;;
 	2)
 		echo -e "${COLOR2}Linux-LTS Kernel＋Intel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools vim net-tools
+		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools vim net-tools openssh
 		break
 		;;
 	3)
 		echo -e "${COLOR2}Linux Kernel＋Amd${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools vim net-tools
+		pacstrap /mnt base linux linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools vim net-tools openssh
 		break
 		;;
 	4)
 		echo -e "${COLOR2}Linux-LTS Kernel＋Amd${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools vim net-tools
+		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools vim net-tools openssh
 		break
 		;;
 	5)
 		echo -e "${COLOR2}Linux-LTS Kernel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools vim net-tools
+		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools vim net-tools openssh
 		break
 		;;
 	*)
 		echo -e "${COLOR2}Linux Kernel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools vim net-tools
+		pacstrap /mnt base linux linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools vim net-tools openssh
 		break
 		;;
 	esac
