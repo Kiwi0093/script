@@ -57,10 +57,10 @@ read EXT_IP
 echo "Address=('${EXT_IP}/24')" >> /etc/netctl/EXT0.service
 echo -n "${COLOR1}Please input your Gateway IP address:\n${NC}"
 read GATE_IP
-echo "Gateway='${GATE_IP}'"
+echo "Gateway='${GATE_IP}'" >> /etc/netctl/EXT0.service
 echo -n "${COLOR1}Please input your DNS IP address:\n${NC}"
 read DNS_IP
-echo "DNS=('${DNS_IP}')"
+echo "DNS=('${DNS_IP}')" >> /etc/netctl/EXT0.service
 echo -e "${COLOR2}Enable EXT0${NC}"
 netctl enable EXT0.service
 echo -e "${COLOR2}Finished.${NC}"
