@@ -120,27 +120,27 @@ do
 	case $SCRIPT in
 		a)
 			echo -e "${COLOR2}Simple Arch Linux${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/master/simple_arch.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/simple_arch.sh)
 			break
 			;;
 		b)
 			echo -e "${COLOR2}Nextcloud Server${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/master/nextc_arch.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/nextc_arch.sh)
 			break
 			;;
 		c)
 			echo -e "${COLOR2}V2Ray Server${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/master/arch_v2ray.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray.sh)
 			break
 			;;
 		d)
 			echo -e "${COLOR2}V2Ray Gateway${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/master/arch_v2ray_gate.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray_gate.sh)
 			break
 			;;
 		e)
 			echo -e "${COLOR2}Kiwi's Private Router${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/master/arch_v2ray_gate_k.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray_gate_k.sh)
 			break
 			;;
 		*)
