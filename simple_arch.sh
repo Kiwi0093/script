@@ -87,7 +87,7 @@ echo -e "${COLOR2}Completed${NC}"
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
 echo -e "${COLOR1}screen${NC}"
-pacman -Sy screen
+pacman -Syu screen
 echo -e "${COLOR2}Completed${NC}"
 
 #install Bootloader
