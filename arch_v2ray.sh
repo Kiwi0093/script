@@ -87,7 +87,7 @@ echo -e "${COLOR2}Completed${NC}"
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
 echo -e "${COLOR1}screen${NC}"
-pacman -Syu screen v2ray certbot python3-certbot-nginx
+pacman -Syu screen v2ray certbot certbot-nginx nginx
 echo -e "${COLOR2}Completed${NC}"
 
 #install Bootloader
