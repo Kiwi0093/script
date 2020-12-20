@@ -28,7 +28,7 @@ echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
 #			;;
 #	esac
 #done
-sudo pacman-mirrors --country China,Taiwan && sudo pacman -Syy
+sudo pacman-mirrors --country China,Taiwan
 #Install
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
 sudo pacman -Syyu --noconfirm
