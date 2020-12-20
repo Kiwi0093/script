@@ -36,13 +36,11 @@ echo -e "${COLOR1}Starting Install Apps${NC}"
 echo -e "${COLOR2}Install yay & Base tools${NC}"
 sudo pacman -Sy --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
 echo -e "${COLOR2}Install ZSH & PowerLevel10k${NC}"
-sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-powerlevel10k ttf-meslo-nerd-font-powerlevel10k
+yay -Sy --noconfirm zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-powerlevel10k ttf-meslo-nerd-font-powerlevel10k
 sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
 sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
 sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
 echo -e "${COLOR2}Set default shell as zsh${NC}"
-chsh -s /bin/zsh & pid1=$!
-wait $pid1
 sudo chsh -s /bin/zsh
 echo -e "${COLOR2}Install Network app Set${NC}"
 yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
