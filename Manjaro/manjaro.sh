@@ -23,7 +23,7 @@ do
 			;;
 		*)
 			echo -e "${COLOR2}Keep original Setting${NC}"
-			sudo pacman-mirrors -c all
+			sudo pacman-mirrors --fasttrack && sudo pacman -Syy
 			break
 			;;
 	esac
