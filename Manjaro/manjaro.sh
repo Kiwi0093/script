@@ -40,26 +40,33 @@ sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting autojump zsh-autosuggest
 sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
 sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
 sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
+echo -e "${COLOR2}Set default shell as zsh${NC}"
+chsh -s /bin/zsh & pid1=$!
+wait $pid1
+sudo chsh -s /bin/zsh
 echo -e "${COLOR2}Install Network app Set${NC}"
 yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
-openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
+openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz & pid2=$!
+wait $pid2
 tar zxvf qv2ray.tar.gz 
 mv -fv ./qv2ray/* ~/.config/qv2ray/ 
 rm -rf ./qv2ray
 # restore Brave Setting
 echo -e "${COLOR2}Restore Brave Browser Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
-openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz
+openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz & pid3=$!
+wait $pid3
 tar zxvf Brave.tar.gz 
 mv -fv ./BraveSoftware/* ~/.config/BraveSoftware/
 rm -rf ./Brave*
 # restore Rambox Setting
 echo -e "${COLOR2}Restore Rambox Setting without proxy${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
-openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz
+openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz & pid4=$!
+wait $pid4
 tar zxvf Rambox.tar.gz 
 mv -fv ./Rambox/* ~/.config/Rambox/
 rm -rf ./Rambox*
@@ -79,7 +86,8 @@ npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-gene
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
 yay -Sy --noconfirm picogo
 curl -o https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
-openssl enc -d -aes256 -in config.json.e -out config.json
+openssl enc -d -aes256 -in config.json.e -out config.json & pid5=$!
+wait $pid5
 mv ./config.json ~/.picogo/config.json
 rm config.json.e
 echo -e "${COLOR2}Install Other Tools${NC}"
@@ -133,6 +141,3 @@ do
 		;;
 	esac
 done
-echo -e "${COLOR2}Set default shell as zsh${NC}"
-sudo chsh -s /bin/zsh
-chsh -s /bin/zsh
