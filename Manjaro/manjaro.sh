@@ -37,6 +37,8 @@ do
 	case $M01 in
 	*)
 		sudo pacman -Syyu
+		Y
+		Y
 		break
 		;;
 	esac
