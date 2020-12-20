@@ -117,8 +117,6 @@ do
 		wget https://dllb2.pling.com/api/files/download/j/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE0OTA1Mzc5MzUiLCJ1IjpudWxsLCJsdCI6ImRvd25sb2FkIiwicyI6IjJjMTcwNjYwYmI4YmE4NDg0ZmJlYWI1MWJkZmFhNmQ4MDJmMTlhOGFhYWI2Mzk5NWY0M2FiMzcwYmJlOGU4N2VhMDIwODU2MWI5MWI2NjYwMTdlMDc3YmFkOWUwNjcxN2IwZjg3YzMxY2NiYzQ4NzI5NDc1MGUyZGM1ZGI1ODE0IiwidCI6MTYwODM4NDQzNSwic3RmcCI6IjY2ZjUwNjJjOTM1ZDVmNzlkODczZmUwMGY5N2Q1MjZlIiwic3RpcCI6IjIxNi4xODkuNTYuNjEifQ.dK08c_JmTAFU7bcDM1Th626J1F4ueB5o2z_F3uTz0fY/plasma-simpleMonitor-v0.6.plasmoid && plasmapkg2 -i *.plasmoid ~/.local/share/plasma/plasmoids/ && rm ./plasma-simpleMonitor-v0.6.plasmoid
                 wget https://dllb2.pling.com/api/files/download/j/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE2MDgwOTEwNTkiLCJ1IjpudWxsLCJsdCI6ImRvd25sb2FkIiwicyI6IjhkMGRlN2Q4YTEzNzBkYmUxNTMxMWJlZjM1MDg5ODFmMWM2Mzc1NTA2MzkwMDA5Mzg4Y2ZiMTZjZDcxMzA2OTVjYjJiOTUyNmUwNmMyMWIyYjU5ZTNmZjhjOWI4NWNjZDIxNGZjNDAyY2QyNmFiYzJhYjcwZTNmNDVhNjEyM2JlIiwidCI6MTYwODM5OTkwOCwic3RmcCI6IjY2ZjUwNjJjOTM1ZDVmNzlkODczZmUwMGY5N2Q1MjZlIiwic3RpcCI6IjIxNi4xODkuNTYuNjEifQ.AjAGU6ppIA5q1lyufMEGH2MySoRiemMDJa4V7BifbTM/VioletEvergarden-Splash.tar.gz && plasmapkg2 -i VioletEvergarden-Splash.tar.gz ~/.local/share/plasma/look-and-feel/ && rm ./VioletEvergarden-Splash.tar.gz
 		curl -o ~/.config/plasma-org.kde.plasma.desktop-appletsrc https://Kiwi0093.github.io/script/Manjaro/plasma-org.kde.plasma.desktop-appletsrc
-
-
 		break
 		;;
 	x)
