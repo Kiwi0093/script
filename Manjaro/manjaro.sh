@@ -62,16 +62,32 @@ git clone https://github.com/zthxxx/hexo-theme-Wikitten.git themes/Wikitten
 npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
 #yay -Sy --noconfirm picogo
-sudo npm install -g picgo
-curl -o config.json.e https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
-openssl enc -d -aes256 -in config.json.e -out config.json
-mv ./config.json ~/.picgo/
-rm config.json.e
+#sudo npm install -g picgo
+typora
+echo -e "${COLOR1}Do you installed picgo by Typora?\nY)Yes*)Not yet\n${NC}"
+while :
+do
+	read PICGO
+	case $PICGO in
+	Y)
+		curl -o config.json.e https://Kiwi0093.github.io/script/Manjaro/picgo/config.json.e
+		openssl enc -d -aes256 -in config.json.e -out config.json
+		mv ./config.json ~/.picgo/
+		rm config.json.e
+		break
+		;;
+	*)
+		echo -e "${COLOR2}Please install picgo via typora and make sure ~/.picgo/ exsist${NC}"
+		;;
+	esac
+done
 echo -e "${COLOR2}Install Other Tools${NC}"
 yay -Sy --noconfirm gnome-pie
 echo -e "${COLOR2}Restore Gnome-pie Setting${NC}"
-curl -o ~/.config/gnome-pie/gnome-pie.conf https://Kiwi0093.github.io/script/Manjaro/pie/gnome-pie.conf
-curl -o ~/.config/gnome-pie/pie.conf https://Kiwi0093.github.io/script/Manjaro/pie/pie.conf
+curl -o gnome-pie.tar.gz https://Kiwi0093.github.io/script/Manjaro/gnome-pie.tar.gz
+tar zxvf gnome-pie.tar.gz
+rm -rf ~/.config/gnome-pie
+mv ./gnome-pie ~/.config/
 echo -e "${COLOR2}Do you need VMware workstation?\ny)Yes, please install\n*)No, I don't need${NC}"
 while :
 do
@@ -95,8 +111,8 @@ do
 	case $DESK in
 	k)
 		echo -e "${COLOR2}For KDE${NC}"
-		wget https://dllb2.pling.com/api/files/download/j/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE0OTA1Mzc5MzUiLCJ1IjpudWxsLCJsdCI6ImRvd25sb2FkIiwicyI6IjJjMTcwNjYwYmI4YmE4NDg0ZmJlYWI1MWJkZmFhNmQ4MDJmMTlhOGFhYWI2Mzk5NWY0M2FiMzcwYmJlOGU4N2VhMDIwODU2MWI5MWI2NjYwMTdlMDc3YmFkOWUwNjcxN2IwZjg3YzMxY2NiYzQ4NzI5NDc1MGUyZGM1ZGI1ODE0IiwidCI6MTYwODM4NDQzNSwic3RmcCI6IjY2ZjUwNjJjOTM1ZDVmNzlkODczZmUwMGY5N2Q1MjZlIiwic3RpcCI6IjIxNi4xODkuNTYuNjEifQ.dK08c_JmTAFU7bcDM1Th626J1F4ueB5o2z_F3uTz0fY/plasma-simpleMonitor-v0.6.plasmoid && plasmapkg2 -i *.plasmoid ~/.local/share/plasma/plasmoids/ && rm ./plasma-simpleMonitor-v0.6.plasmoid
-                wget https://dllb2.pling.com/api/files/download/j/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE2MDgwOTEwNTkiLCJ1IjpudWxsLCJsdCI6ImRvd25sb2FkIiwicyI6IjhkMGRlN2Q4YTEzNzBkYmUxNTMxMWJlZjM1MDg5ODFmMWM2Mzc1NTA2MzkwMDA5Mzg4Y2ZiMTZjZDcxMzA2OTVjYjJiOTUyNmUwNmMyMWIyYjU5ZTNmZjhjOWI4NWNjZDIxNGZjNDAyY2QyNmFiYzJhYjcwZTNmNDVhNjEyM2JlIiwidCI6MTYwODM5OTkwOCwic3RmcCI6IjY2ZjUwNjJjOTM1ZDVmNzlkODczZmUwMGY5N2Q1MjZlIiwic3RpcCI6IjIxNi4xODkuNTYuNjEifQ.AjAGU6ppIA5q1lyufMEGH2MySoRiemMDJa4V7BifbTM/VioletEvergarden-Splash.tar.gz && plasmapkg2 -i VioletEvergarden-Splash.tar.gz ~/.local/share/plasma/look-and-feel/ && rm ./VioletEvergarden-Splash.tar.gz
+		curl -o plasma-simpleMonitor-v0.6.plasmoid https://Kiwi0093.github.io/script/Manjaro/plasma-simpleMonitor-v0.6.plasmoid && plasmapkg2 -i *.plasmoid ~/.local/share/plasma/plasmoids/ && rm ./plasma-simpleMonitor-v0.6.plasmoid
+                curl -o VioletEvergarden-Splash.tar.gz https://Kiwi0093.github.io/script/Manjaro/VioletEvergarden-Splash.tar.gz && plasmapkg2 -i VioletEvergarden-Splash.tar.gz ~/.local/share/plasma/look-and-feel/ && rm ./VioletEvergarden-Splash.tar.gz
 		curl -o ~/.config/plasma-org.kde.plasma.desktop-appletsrc https://Kiwi0093.github.io/script/Manjaro/plasma-org.kde.plasma.desktop-appletsrc
 		break
 		;;
