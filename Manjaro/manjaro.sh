@@ -22,6 +22,7 @@ yay -Sy --noconfirm zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-po
 sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
 sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
 sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
+cp /etc/zsh/zshrc ~/.zshrc
 echo -e "${COLOR2}Set default shell as zsh${NC}"
 sudo chsh -s /bin/zsh
 sudo chsh -s /bin/zsh $USER
