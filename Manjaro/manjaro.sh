@@ -4,8 +4,6 @@ COLOR1='\e[94m'
 COLOR2='\e[32m'
 NC='\e[0m'
 
-echo -e "${COLOR1}Please input your Decryp password\n${NC}"
-read SSLPASSWD
 echo -e "${COLOR1}Please input your user name for change shell\n${NC}"
 read USER
 #Modify Mirrorlist to setting country
@@ -31,7 +29,7 @@ yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamv
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o qv2ray.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
-openssl enc -d -aes256 -k $SSLPASSWD -in qv2ray.e.tar.gz -out qv2ray.tar.gz
+openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
 tar zxvf qv2ray.tar.gz 
 rm -rf ~/.config/qv2ray
 mv ./qv2ray ~/.config/ 
@@ -63,9 +61,10 @@ cd ~/GitHub/Wiki-site
 git clone https://github.com/zthxxx/hexo-theme-Wikitten.git themes/Wikitten
 npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
-yay -Sy --noconfirm picogo
+#yay -Sy --noconfirm picogo
+sudo npm install -g picgo
 curl -o config.json.e https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
-openssl enc -d -aes256 -k $SSLPASSWD -in config.json.e -out config.json
+openssl enc -d -aes256 -in config.json.e -out config.json
 mv ./config.json ~/.picgo/
 rm config.json.e
 echo -e "${COLOR2}Install Other Tools${NC}"
