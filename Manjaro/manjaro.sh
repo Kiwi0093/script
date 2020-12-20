@@ -28,7 +28,7 @@ echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
 #			;;
 #	esac
 #done
-sudo pacman-mirrors --country China,Taiwan --fasttrack 3 && sudo pacman -Syy
+sudo pacman-mirrors --country China,Taiwan && sudo pacman -Syy
 #Install
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
 while :
@@ -36,9 +36,7 @@ do
 	read M01
 	case $M01 in
 	*)
-		sudo pacman -Syyu
-		Y
-		Y
+		sudo pacman -Syyu --noconfirm
 		break
 		;;
 	esac
@@ -50,7 +48,7 @@ do
 	read M02
 	case $M02 in
 	*)
-		sudo pacman -Sy yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
+		sudo pacman -Sy --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
 		break
 		;;
 	esac
@@ -62,7 +60,7 @@ do
 	read M03
 	case $M03 in
 	*)
-		sudo pacman -Sy zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
+		sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
 		break
 		;;
 	esac
@@ -97,7 +95,7 @@ do
 	read M06
 	case $M06 in
 	*)
-		yay -Sy brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
+		yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
 		break
 		;;
 	esac
@@ -156,7 +154,7 @@ do
 	read M10
 	case $M10 in
 	*)
-		yay -Sy git github-desktop-bin typora nodejs npm
+		yay -Sy --noconfirm git github-desktop-bin typora nodejs npm
 		break
 		;;
 	esac
@@ -178,7 +176,7 @@ do
 	read M11
 	case $M11 in
 	*)
-		yay -Sy picogo
+		yay -Sy --noconfirm picogo
 		break
 		;;
 	esac
@@ -202,7 +200,7 @@ do
 	read M13
 	case $M13 in
 	*)
-		yay -Sy gnome-pie
+		yay -Sy --noconfirm gnome-pie
 		break
 		;;
 	esac
@@ -217,7 +215,7 @@ do
 	case $VMW in
 	y)
 		echo -e "${COLOR2}Install VMware Workstation to your system${NC}"
-		yay -Sy vmware-workstation
+		yay -Sy --noconfirm vmware-workstation
 		break
 		;;
 	*)
