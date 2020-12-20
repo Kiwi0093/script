@@ -36,7 +36,7 @@ echo -e "${COLOR1}Starting Install Apps${NC}"
 echo -e "${COLOR2}Install yay & Base tools${NC}"
 sudo pacman -Sy --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
 echo -e "${COLOR2}Install ZSH & PowerLevel10k${NC}"
-sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
+sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-powerlevel10k ttf-meslo-nerd-font-powerlevel10k
 sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
 sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
 sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
