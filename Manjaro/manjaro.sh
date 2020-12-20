@@ -4,9 +4,9 @@ COLOR1='\e[94m'
 COLOR2='\e[32m'
 NC='\e[0m'
 
-echo -n "${COLOR1}Please input your Decryp password\n${NC}"
+echo -e "${COLOR1}Please input your Decryp password\n${NC}"
 read SSLPASSWD
-echo -n "${COLOR1}Please input your user name for change shell\n${NC}"
+echo -e "${COLOR1}Please input your user name for change shell\n${NC}"
 read USER
 #Modify Mirrorlist to setting country
 echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
