@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 #Parmeter Pre-Define
 COLOR1='\e[94m'
 COLOR2='\e[32m'
@@ -11,7 +11,6 @@ echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
 sudo pacman-mirrors --country China,Taiwan,United_States
 #Install
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
-sudo pacman -R --noconfirm firefox thunderbird yakuake
 sudo pacman -Syyu --noconfirm
 echo -e "${COLOR1}Starting Install Apps${NC}"
 echo -e "${COLOR2}Install yay & Base tools${NC}"
