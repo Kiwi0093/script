@@ -29,21 +29,21 @@ echo -e "${COLOR2}Install Network app Set${NC}"
 yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
-curl -o https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
+curl -o qv2ray.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
 openssl enc -d -aes256 -k $SSLPASSWD -in qv2ray.e.tar.gz -out qv2ray.tar.gz
 tar zxvf qv2ray.tar.gz 
 mv -fv ./qv2ray/* ~/.config/qv2ray/ 
 rm -rf ./qv2ray
 # restore Brave Setting
 echo -e "${COLOR2}Restore Brave Browser Setting${NC}"
-curl -o https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
+curl -o Brave.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
 openssl enc -d -aes256 -k $SSLPASSWD -in Brave.e.tar.gz -out Brave.tar.gz & pid3=$!
 tar zxvf Brave.tar.gz 
 mv -fv ./BraveSoftware/* ~/.config/BraveSoftware/
 rm -rf ./Brave*
 # restore Rambox Setting
 echo -e "${COLOR2}Restore Rambox Setting without proxy${NC}"
-curl -o https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
+curl -o Rambox.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
 openssl enc -d -aes256 -k $SSLPASSWD -in Rambox.e.tar.gz -out Rambox.tar.gz & pid4=$!
 tar zxvf Rambox.tar.gz 
 mv -fv ./Rambox/* ~/.config/Rambox/
@@ -63,7 +63,7 @@ git clone https://github.com/zthxxx/hexo-theme-Wikitten.git themes/Wikitten
 npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
 yay -Sy --noconfirm picogo
-curl -o https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
+curl -o config.json.e https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
 openssl enc -d -aes256 -k $SSLPASSWD -in config.json.e -out config.json
 mv ./config.json ~/.picogo/config.json
 rm config.json.e
