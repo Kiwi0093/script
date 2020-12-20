@@ -29,47 +29,136 @@ echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
 #	esac
 #done
 sudo pacman-mirrors --country China,Taiwan --fasttrack 3 && sudo pacman -Syy
-
 #Install
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
-sudo pacman -Syyu
+while :
+do
+	read 01
+	case $01 in
+	*)
+		sudo pacman -Syyu
+		break
+		;;
+	esac
+done
 echo -e "${COLOR1}Starting Install Apps${NC}"
 echo -e "${COLOR2}Install yay & Base tools${NC}"
-sudo pacman -Sy yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
+while :
+do
+	read 02
+	case $02 in
+	*)
+		sudo pacman -Sy yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
+		break
+		;;
+	esac
+done
 echo -e "${COLOR2}Install Common Desktop Tools${NC}"
 echo -e "${COLOR2}Install ZSH & PowerLevel10k${NC}"
-sudo pacman -Sy zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
+while :
+do
+	read 03
+	case $03 in
+	*)
+		sudo pacman -Sy zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
+		break
+		;;
+	esac
+done
 curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
 curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
 curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
 echo -e "${COLOR2}Set default shell as zsh${NC}"
-chsh -s /bin/zsh
-sudo chsh -s /bin/zsh
+while :
+do
+	read 04
+	case $04 in
+	*)
+		chsh -s /bin/zsh
+		break
+		;;
+	esac
+done
+while :
+do
+	read 05
+	case $05 in
+	*)
+		sudo chsh -s /bin/zsh
+		break
+		;;
+	esac
+done
 echo -e "${COLOR2}Install Network app Set${NC}"
-yay -Sy brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
+while :
+do
+	read 06
+	case $06 in
+	*)
+		yay -Sy brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
+		break
+		;;
+	esac
+done
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
-openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
+while :
+do
+	read 07
+	case $07 in
+	*)
+		openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
+		break
+		;;
+	esac
+done
 tar zxvf qv2ray.tar.gz 
 mv -fv ./qv2ray/* ~/.config/qv2ray/ 
 rm -rf ./qv2ray
 # restore Brave Setting
 echo -e "${COLOR2}Restore Brave Browser Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
-openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz
+while :
+do
+	read 08
+	case $08 in
+	*)
+		openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz
+		break
+		;;
+	esac
+done
 tar zxvf Brave.tar.gz 
 mv -fv ./BraveSoftware/* ~/.config/BraveSoftware/
 rm -rf ./Brave*
 # restore Rambox Setting
 echo -e "${COLOR2}Restore Rambox Setting without proxy${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
-openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz
+while :
+do
+	read 09
+	case $09 in
+	*)
+		openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz
+		break
+		;;
+	esac
+done
 tar zxvf Rambox.tar.gz 
 mv -fv ./Rambox/* ~/.config/Rambox/
 rm -rf ./Rambox*
 echo -e "${COLOR2}Install Blog & Wiki Set${NC}"
-yay -Sy git github-desktop-bin typora nodejs npm
+while :
+do
+	read 10
+	case $10 in
+	*)
+		yay -Sy git github-desktop-bin typora nodejs npm
+		break
+		;;
+	esac
+done
 echo -e "${COLOR2}Setup Blog & Wiki Env${NC}"
 mkir ~/Github
 cd ~/Github
@@ -82,13 +171,40 @@ cd ~/Github/Wiki-site
 git clone https://github.com/zthxxx/hexo-theme-Wikitten.git themes/Wikitten
 npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
-yay -Sy picogo
+while :
+do 
+	read 11
+	case $11 in
+	*)
+		yay -Sy picogo
+		break
+		;;
+	esac
+done
 curl -o https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
-openssl enc -d -aes256 -in config.json.e -out config.json
+while :
+do
+	read 12
+	case $12 in
+	*)
+		openssl enc -d -aes256 -in config.json.e -out config.json
+		break
+		;;
+	esac
+done
 mv ./config.json ~/.picogo/config.json
 rm config.json.e
 echo -e "${COLOR2}Install Other Tools${NC}"
-yay -Sy gnome-pie
+while :
+do
+	read 13
+	case $13 in
+	*)
+		yay -Sy gnome-pie
+		break
+		;;
+	esac
+done
 echo -e "${COLOR2}Restore Gnome-pie Setting${NC}"
 curl -o ~/.config/gnome-pie/gnome-pie.conf https://Kiwi0093.github.io/script/Manjaro/pie/gnome-pie.conf
 curl -o ~/.config/gnome-pie/pie.conf https://Kiwi0093.github.io/script/Manjaro/pie/pie.conf
