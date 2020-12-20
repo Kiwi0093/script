@@ -40,9 +40,6 @@ sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting autojump zsh-autosuggest
 sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
 sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
 sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
-echo -e "${COLOR2}Set default shell as zsh${NC}"
-chsh -s /bin/zsh
-sudo chsh -s /bin/zsh
 echo -e "${COLOR2}Install Network app Set${NC}"
 yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
 # restore Qv2ray Setting
@@ -136,7 +133,6 @@ do
 		;;
 	esac
 done
-echo -e "${COLOR2}Completed${NC}"
-# Reboot
-echo -e "${COLOR2}Rebooting...${NC}"
-reboot
+echo -e "${COLOR2}Set default shell as zsh${NC}"
+sudo chsh -s /bin/zsh
+chsh -s /bin/zsh
