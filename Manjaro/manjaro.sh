@@ -31,134 +31,43 @@ echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
 sudo pacman-mirrors --country China,Taiwan && sudo pacman -Syy
 #Install
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
-while :
-do
-	read M01
-	case $M01 in
-	*)
-		sudo pacman -Syyu --noconfirm
-		break
-		;;
-	esac
-done
+sudo pacman -Syyu --noconfirm
 echo -e "${COLOR1}Starting Install Apps${NC}"
 echo -e "${COLOR2}Install yay & Base tools${NC}"
-while :
-do
-	read M02
-	case $M02 in
-	*)
-		sudo pacman -Sy --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
-		break
-		;;
-	esac
-done
-echo -e "${COLOR2}Install Common Desktop Tools${NC}"
+sudo pacman -Sy --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
 echo -e "${COLOR2}Install ZSH & PowerLevel10k${NC}"
-while :
-do
-	read M03
-	case $M03 in
-	*)
-		sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
-		break
-		;;
-	esac
-done
-curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
-curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
-curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
+sudo pacman -Sy --noconfirm zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
+sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
+sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
+sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
 echo -e "${COLOR2}Set default shell as zsh${NC}"
-while :
-do
-	read M04
-	case $M04 in
-	*)
-		chsh -s /bin/zsh
-		break
-		;;
-	esac
-done
-while :
-do
-	read M05
-	case $M05 in
-	*)
-		sudo chsh -s /bin/zsh
-		break
-		;;
-	esac
-done
+chsh -s /bin/zsh
+sudo chsh -s /bin/zsh
 echo -e "${COLOR2}Install Network app Set${NC}"
-while :
-do
-	read M06
-	case $M06 in
-	*)
-		yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
-		break
-		;;
-	esac
-done
+yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
-while :
-do
-	read M07
-	case $M07 in
-	*)
-		openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
-		break
-		;;
-	esac
-done
+openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
 tar zxvf qv2ray.tar.gz 
 mv -fv ./qv2ray/* ~/.config/qv2ray/ 
 rm -rf ./qv2ray
 # restore Brave Setting
 echo -e "${COLOR2}Restore Brave Browser Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
-while :
-do
-	read M08
-	case $M08 in
-	*)
-		openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz
-		break
-		;;
-	esac
-done
+openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz
 tar zxvf Brave.tar.gz 
 mv -fv ./BraveSoftware/* ~/.config/BraveSoftware/
 rm -rf ./Brave*
 # restore Rambox Setting
 echo -e "${COLOR2}Restore Rambox Setting without proxy${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
-while :
-do
-	read M09
-	case $M09 in
-	*)
-		openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz
-		break
-		;;
-	esac
-done
+openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz
 tar zxvf Rambox.tar.gz 
 mv -fv ./Rambox/* ~/.config/Rambox/
 rm -rf ./Rambox*
 echo -e "${COLOR2}Install Blog & Wiki Set${NC}"
-while :
-do
-	read M10
-	case $M10 in
-	*)
-		yay -Sy --noconfirm git github-desktop-bin typora nodejs npm
-		break
-		;;
-	esac
-done
+yay -Sy --noconfirm git github-desktop-bin typora nodejs npm
 echo -e "${COLOR2}Setup Blog & Wiki Env${NC}"
 mkir ~/Github
 cd ~/Github
@@ -171,40 +80,13 @@ cd ~/Github/Wiki-site
 git clone https://github.com/zthxxx/hexo-theme-Wikitten.git themes/Wikitten
 npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
-while :
-do 
-	read M11
-	case $M11 in
-	*)
-		yay -Sy --noconfirm picogo
-		break
-		;;
-	esac
-done
+yay -Sy --noconfirm picogo
 curl -o https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
-while :
-do
-	read M12
-	case $M12 in
-	*)
-		openssl enc -d -aes256 -in config.json.e -out config.json
-		break
-		;;
-	esac
-done
+openssl enc -d -aes256 -in config.json.e -out config.json
 mv ./config.json ~/.picogo/config.json
 rm config.json.e
 echo -e "${COLOR2}Install Other Tools${NC}"
-while :
-do
-	read M13
-	case $M13 in
-	*)
-		yay -Sy --noconfirm gnome-pie
-		break
-		;;
-	esac
-done
+yay -Sy --noconfirm gnome-pie
 echo -e "${COLOR2}Restore Gnome-pie Setting${NC}"
 curl -o ~/.config/gnome-pie/gnome-pie.conf https://Kiwi0093.github.io/script/Manjaro/pie/gnome-pie.conf
 curl -o ~/.config/gnome-pie/pie.conf https://Kiwi0093.github.io/script/Manjaro/pie/pie.conf
