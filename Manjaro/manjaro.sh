@@ -33,8 +33,8 @@ sudo pacman-mirrors --country China,Taiwan --fasttrack 3 && sudo pacman -Syy
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
 while :
 do
-	read 01
-	case $01 in
+	read M01
+	case $M01 in
 	*)
 		sudo pacman -Syyu
 		break
@@ -45,8 +45,8 @@ echo -e "${COLOR1}Starting Install Apps${NC}"
 echo -e "${COLOR2}Install yay & Base tools${NC}"
 while :
 do
-	read 02
-	case $02 in
+	read M02
+	case $M02 in
 	*)
 		sudo pacman -Sy yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf
 		break
@@ -57,8 +57,8 @@ echo -e "${COLOR2}Install Common Desktop Tools${NC}"
 echo -e "${COLOR2}Install ZSH & PowerLevel10k${NC}"
 while :
 do
-	read 03
-	case $03 in
+	read M03
+	case $M03 in
 	*)
 		sudo pacman -Sy zsh zsh-syntax-highlighting autojump zsh-autosuggestions zsh-theme-powerlevel10k zsh-theme-powerlevel10k 
 		break
@@ -71,8 +71,8 @@ curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
 echo -e "${COLOR2}Set default shell as zsh${NC}"
 while :
 do
-	read 04
-	case $04 in
+	read M04
+	case $M04 in
 	*)
 		chsh -s /bin/zsh
 		break
@@ -81,8 +81,8 @@ do
 done
 while :
 do
-	read 05
-	case $05 in
+	read M05
+	case $M05 in
 	*)
 		sudo chsh -s /bin/zsh
 		break
@@ -92,8 +92,8 @@ done
 echo -e "${COLOR2}Install Network app Set${NC}"
 while :
 do
-	read 06
-	case $06 in
+	read M06
+	case $M06 in
 	*)
 		yay -Sy brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
 		break
@@ -105,8 +105,8 @@ echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
 while :
 do
-	read 07
-	case $07 in
+	read M07
+	case $M07 in
 	*)
 		openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
 		break
@@ -121,8 +121,8 @@ echo -e "${COLOR2}Restore Brave Browser Setting${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
 while :
 do
-	read 08
-	case $08 in
+	read M08
+	case $M08 in
 	*)
 		openssl enc -d -aes256 -in Brave.e.tar.gz -out Brave.tar.gz
 		break
@@ -137,8 +137,8 @@ echo -e "${COLOR2}Restore Rambox Setting without proxy${NC}"
 curl -o https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
 while :
 do
-	read 09
-	case $09 in
+	read M09
+	case $M09 in
 	*)
 		openssl enc -d -aes256 -in Rambox.e.tar.gz -out Rambox.tar.gz
 		break
@@ -151,8 +151,8 @@ rm -rf ./Rambox*
 echo -e "${COLOR2}Install Blog & Wiki Set${NC}"
 while :
 do
-	read 10
-	case $10 in
+	read M10
+	case $M10 in
 	*)
 		yay -Sy git github-desktop-bin typora nodejs npm
 		break
@@ -173,8 +173,8 @@ npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-gene
 echo -e "${COLOR2}Set up Typora with Pico${NC}"
 while :
 do 
-	read 11
-	case $11 in
+	read M11
+	case $M11 in
 	*)
 		yay -Sy picogo
 		break
@@ -184,8 +184,8 @@ done
 curl -o https://Kiwi0093.github.io/script/Manjaro/picogo/config.json.e
 while :
 do
-	read 12
-	case $12 in
+	read M12
+	case $M12 in
 	*)
 		openssl enc -d -aes256 -in config.json.e -out config.json
 		break
@@ -197,8 +197,8 @@ rm config.json.e
 echo -e "${COLOR2}Install Other Tools${NC}"
 while :
 do
-	read 13
-	case $13 in
+	read M13
+	case $M13 in
 	*)
 		yay -Sy gnome-pie
 		break
