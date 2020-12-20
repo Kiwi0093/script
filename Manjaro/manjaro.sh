@@ -5,29 +5,30 @@ COLOR2='\e[32m'
 NC='\e[0m'
 
 #Modify Mirrorlist to setting country
-echo -e "${COLOR1}Starting Modify mirrorlist to China servers${NC}"
-echo -n "${COLOR1}Please Select the country you want to set for mirror list\nC)China\nT)Taiwan\n*)whatever..I don't care\n${NC}"
-while :
-do
-	read COUNTRY
-	case $COUNTRY in
-		C)
-			echo -e "${COLOR2}Set China${NC}"
-			sudo pacman-mirrors -c China
-			break
-			;;
-		T)
-			echo -e "${COLOR2}SetTaiwan${NC}"
-			sudo pacman-mirrors -c Taiwan
-			break
-			;;
-		*)
-			echo -e "${COLOR2}Keep original Setting${NC}"
-			sudo pacman-mirrors --fasttrack && sudo pacman -Syy
-			break
-			;;
-	esac
-done
+echo -e "${COLOR1}Starting Modify mirrorlist to China/Taiwan servers${NC}"
+#echo -n "${COLOR1}Please Select the country you want to set for mirror list\nC)China\nT)Taiwan\n*)whatever..I don't care\n${NC}"
+#while :
+#do
+#	read COUNTRY
+#	case $COUNTRY in
+#		C)
+#			echo -e "${COLOR2}Set China${NC}"
+#			sudo pacman-mirrors -c China
+#			break
+#			;;
+#		T)
+#			echo -e "${COLOR2}SetTaiwan${NC}"
+#			sudo pacman-mirrors -c Taiwan
+#			break
+#			;;
+#		*)
+#			echo -e "${COLOR2}Keep original Setting${NC}"
+#			sudo pacman-mirrors --fasttrack && sudo pacman -Syy
+#			break
+#			;;
+#	esac
+#done
+sudo pacman-mirrors --country China,Taiwan --fasttrack 3 && sudo pacman -Syy
 
 #Install
 echo -e "${COLOR1}Update Mirrorlist & System${NC}"
