@@ -25,7 +25,11 @@ echo -e "${COLOR2}Set default shell as zsh${NC}"
 sudo chsh -s /bin/zsh
 sudo chsh -s /bin/zsh $USER
 echo -e "${COLOR2}Install Network app Set${NC}"
-yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin
+yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin fcitx fcitx-configtool fcitx-chewing fcitx-mozc
+# add Chinese input support
+sudo echo "export GTK_IM_MODULE=fcitx" >> /etc/profile
+sudo echo "export XMODIFIERS=@im=fcitx" >> /etc/profile
+sudo echo "export QT_IM_MODULE=fcitx" >> /etc/profile
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o qv2ray.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
