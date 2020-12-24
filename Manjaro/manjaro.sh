@@ -25,11 +25,16 @@ echo -e "${COLOR2}Set default shell as zsh${NC}"
 sudo chsh -s /bin/zsh
 sudo chsh -s /bin/zsh $USER
 echo -e "${COLOR2}Install Network app Set${NC}"
-yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin fcitx fcitx-configtool fcitx-chewing fcitx-mozc
+yay -Sy --noconfirm brave-bin v2ray qv2ray putty filezilla remmina freerdp teamviewer rambox-bin fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc
+echo -e "${COLOR2}Set up Chinese Input Env${NC}"
+curl -o brave.e https://Kiwi0093.github.io/script/Manjaro/brave.e
+openssl enc -d -aes256 -in brave.e -out brave
+cat ./brave
+echo -e"${COLOR2}please set SYNC for your brave${NC}"
+brave
 # add Chinese input support
-sudo echo "export GTK_IM_MODULE=fcitx" >> /etc/profile
-sudo echo "export XMODIFIERS=@im=fcitx" >> /etc/profile
-sudo echo "export QT_IM_MODULE=fcitx" >> /etc/profile
+curl -o profile https://Kiwi0093.github.io/script/Manjaro/profile
+sudo mv ./profile /etc/profile
 # restore Qv2ray Setting
 echo -e "${COLOR2}Restore Qv2ray Setting${NC}"
 curl -o qv2ray.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
@@ -37,20 +42,6 @@ openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
 tar zxvf qv2ray.tar.gz 
 rm -rf ~/.config/qv2ray
 mv ./qv2ray ~/.config/ 
-# restore Brave Setting
-#echo -e "${COLOR2}Restore Brave Browser Setting${NC}"
-#curl -o Brave.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/Brave.e.tar.gz
-#openssl enc -d -aes256 -k $SSLPASSWD -in Brave.e.tar.gz -out Brave.tar.gz & pid3=$!
-#tar zxvf Brave.tar.gz 
-#mv -fv ./BraveSoftware/* ~/.config/BraveSoftware/
-#rm -rf ./Brave*
-# restore Rambox Setting
-#echo -e "${COLOR2}Restore Rambox Setting without proxy${NC}"
-#curl -o Rambox.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/Rambox.e.tar.gz
-#openssl enc -d -aes256 -k $SSLPASSWD -in Rambox.e.tar.gz -out Rambox.tar.gz & pid4=$!
-#tar zxvf Rambox.tar.gz 
-#mv -fv ./Rambox/* ~/.config/Rambox/
-#rm -rf ./Rambox*
 echo -e "${COLOR2}Install Blog & Wiki Set${NC}"
 yay -Sy --noconfirm git github-desktop-bin typora nodejs npm
 echo -e "${COLOR2}Setup Blog & Wiki Env${NC}"
