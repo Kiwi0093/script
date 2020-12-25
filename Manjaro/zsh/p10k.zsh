@@ -345,6 +345,7 @@
 
   # Custom prefix.
   # typeset -g POWERLEVEL9K_DIR_PREFIX='in '
+  typeset -g POWERLEVEL9K_DIR_PREFIX='ﱮ '
 
   #####################################[ vcs: git status ]######################################
   # Version control system colors.
@@ -469,9 +470,9 @@
   typeset -g POWERLEVEL9K_VCS_{STAGED,UNSTAGED,UNTRACKED,CONFLICTED,COMMITS_AHEAD,COMMITS_BEHIND}_MAX_NUM=-1
 
   # Custom icon.
-  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_EXPANSION=
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_EXPANSION=' '
   # Custom prefix.
-  typeset -g POWERLEVEL9K_VCS_PREFIX='on '
+  typeset -g POWERLEVEL9K_VCS_PREFIX=''
 
   # Show status of repositories of these types. You can add svn and/or hg if you are
   # using them. If you do, your prompt may become slow even when your current directory
