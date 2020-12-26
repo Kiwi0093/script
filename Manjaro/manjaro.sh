@@ -133,8 +133,8 @@ do
 			read Q_VERSION
 			echo -e "${COLOR2}Download QV2Ray AppImage from Github${NC}"
 			mkdir ~/Applications
-			wget https://github.com/Qv2ray/Qv2ray/releases/download/v$Q_VERSION/Qv2ray.v$Q_VERSION.linux-x64.AppImage
-			mv ./Qv2ray.v* ~/Applications/Qv2ray.v$Q_VERSION.linux-x64.AppImage
+			wget https://github.com/Qv2ray/Qv2ray/releases/download/v${Q_VERSION}/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
+			mv ./Qv2ray.v* ~/Applications/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
 			break
 			;;
 		N)
