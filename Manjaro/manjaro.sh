@@ -73,6 +73,7 @@ do
 			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Regular-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Regular-1.000.ttf
 			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
 			# Download Zeon.ttf & Install
+			echo -e "${COLOR2}Download & Install Zeon font for Zeon Icon${NC}"
 			sudo mkdir /usr/local/share/fonts/z
 			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
 			break
@@ -81,6 +82,7 @@ do
 			echo -e "${COLOR2}Normal Installation${NC}"
 			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
 			# Download Zeon.ttf & Install
+			echo -e "${COLOR2}Download & Install Zeon font for Zeon Icon${NC}"
 			sudo mkdir /usr/local/share/fonts/z
 			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
 			break
@@ -131,7 +133,8 @@ do
 			read Q_VERSION
 			echo -e "${COLOR2}Download QV2Ray AppImage from Github${NC}"
 			mkdir ~/Applications
-			curl -o ~/Applications/Qv2ray.v$Q_VERSION.linux-x64.AppImage https://github.com/Qv2ray/Qv2ray/releases/download/v$Q_VERSION/Qv2ray.v$Q_VERSION.linux-x64.AppImage
+			wget https://github.com/Qv2ray/Qv2ray/releases/download/v$Q_VERSION/Qv2ray.v$Q_VERSION.linux-x64.AppImage
+			mv ./Qv2ray.v* ~/Applications/Qv2ray.v$Q_VERSION.linux-x64.AppImage
 			break
 			;;
 		N)
