@@ -72,11 +72,17 @@ do
 			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Italic-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Italic-1.000.ttf
 			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Regular-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Regular-1.000.ttf
 			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
+			# Download Zeon.ttf & Install
+			sudo mkdir /usr/local/share/fonts/z
+			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
 			break
 			;;
 		N)
 			echo -e "${COLOR2}Normal Installation${NC}"
 			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
+			# Download Zeon.ttf & Install
+			sudo mkdir /usr/local/share/fonts/z
+			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
 			break
 			;;
 		*)
@@ -312,6 +318,7 @@ sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/alia
 sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
 sudo cp /etc/zsh/zshrc /root/.zshrc
 cp /etc/zsh/zshrc ~/.zshrc
+
 
 # Chinese Input ENV Setting
 echo -e "${COLOR2}Setting Fcitx Chinese Input ENV ${NC}"
