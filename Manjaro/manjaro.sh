@@ -137,7 +137,7 @@ do
 			echo -e "${COLOR2}Download QV2Ray AppImage from Github${NC}"
 			sudo mkdir /ust/local/Applications
 			sudo wget https://github.com/Qv2ray/Qv2ray/releases/download/v${Q_VERSION}/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
-			sudo mv ./Qv2ray.v* /usr/local/Applications/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
+			sudo mv ./Qv2ray.v* /usr/local/Applications/Qv2ray.AppImage
 			break
 			;;
 		N)
@@ -339,7 +339,7 @@ do
 	case $Q_SET in
 		Y)
 			echo -e "${COLOR1}Check QV2ray installed${NC}"
-			if [ -f "/usr/local/Applications/Qv2ray*AppImage" ]; then
+			if [ -f "/usr/local/Applications/Qv2ray.AppImage" ]; then
 				echo -e "${COLOR2}AppImage Version Installed${NC}"
 				curl -o qv2ray.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
 				openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
