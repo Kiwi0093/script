@@ -58,7 +58,7 @@ sudo pacman -Syyu
 
 # Install Basic tools
 echo -e "${COLOR1}Install Packages${NC}"
-sudo pacman -S --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-powerlevel10k awesome-terminal-fonts v2ray putty filezilla remmina freerdp git
+sudo pacman -S --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-powerlevel10k awesome-terminal-fonts v2ray putty filezilla remmina freerdp git gnome-pie
 echo -e "${COLOR1}Do you need pre-download ttf files for ${COLOR_H2}ttf-meslo-nerd-font-powerlevel10k${NC}\n ${COLOR_H1}Y) Yes\n N) No need.\n >${NC}"
 while :
 do
@@ -66,6 +66,7 @@ do
 	case $TTF in
 		Y)
 			echo -e "${COLOR2}Download TTF files for install Issue${NC}"
+			mkdir ~/.cache/yay/
 			mkdir ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k
 			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Bold-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Bold-1.000.ttf
 			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Bold-Italic-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Bold-Italic-1.000.ttf
