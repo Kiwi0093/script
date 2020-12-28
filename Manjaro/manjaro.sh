@@ -74,6 +74,7 @@ do
 			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
 			# Download Zeon.ttf & Install
 			echo -e "${COLOR2}Download & Install Zeon font for Zeon Icon${NC}"
+			sudo mkdir /usr/local/share/fonts
 			sudo mkdir /usr/local/share/fonts/z
 			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
 			break
@@ -83,6 +84,7 @@ do
 			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
 			# Download Zeon.ttf & Install
 			echo -e "${COLOR2}Download & Install Zeon font for Zeon Icon${NC}"
+			sudo mkdir /usr/local/share/fonts
 			sudo mkdir /usr/local/share/fonts/z
 			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
 			break
@@ -132,9 +134,9 @@ do
 			echo -e "${COLOR_H1}Please enter Qv2ray Version(ie:2.6.3)${NC}"
 			read Q_VERSION
 			echo -e "${COLOR2}Download QV2Ray AppImage from Github${NC}"
-			mkdir ~/Applications
-			wget https://github.com/Qv2ray/Qv2ray/releases/download/v${Q_VERSION}/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
-			mv ./Qv2ray.v* ~/Applications/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
+			sudo mkdir /ust/local/Applications
+			sudo wget https://github.com/Qv2ray/Qv2ray/releases/download/v${Q_VERSION}/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
+			sudo mv ./Qv2ray.v* /usr/local/Applications/Qv2ray.v${Q_VERSION}.linux-x64.AppImage
 			break
 			;;
 		N)
@@ -336,7 +338,7 @@ do
 	case $Q_SET in
 		Y)
 			echo -e "${COLOR1}Check QV2ray installed${NC}"
-			if [ -f "~/Applications/Qv2ray*AppImage" ]; then
+			if [ -f "/usr/local/Applications/Qv2ray*AppImage" ]; then
 				echo -e "${COLOR2}AppImage Version Installed${NC}"
 				curl -o qv2ray.e.tar.gz https://Kiwi0093.github.io/script/Manjaro/qv2ray.e.tar.gz
 				openssl enc -d -aes256 -in qv2ray.e.tar.gz -out qv2ray.tar.gz
