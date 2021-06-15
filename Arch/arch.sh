@@ -124,29 +124,29 @@ echo "${COLOR1}Starting Copy ZSH setting file to new Archlinux${NC}"
 cp -Rv /etc/zsh /mnt/etc/
 echo -e "${COLOR2}Completed${NC}"
 
-echo -n "${COLOR1}Please select which type you want\na)Simple Server\nb)Nextcloud Server\nc)V2Ray Server\nd)V2Ray Gateway\n*)I'm the best! let me do by my own!!\n${NC}"
+echo -n "${COLOR1}Please select which type you want${NC}${COLOR_H1}\na)Simple Server\nb)Nextcloud Server\nc)V2Ray Server\nd)V2Ray Gateway\n*)I'm the best! let me do by my own!!\n${NC}"
 while :
 do
 	read SCRIPT
 	case $SCRIPT in
 		a)
 			echo -e "${COLOR2}Simple Arch Linux${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/simple_arch.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/Arch/simple_arch.sh)
 			break
 			;;
 		b)
 			echo -e "${COLOR2}Nextcloud Server${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/nextc_arch.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/Arch/nextc_arch.sh)
 			break
 			;;
 		c)
 			echo -e "${COLOR2}V2Ray Server${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/Arch/arch_v2ray.sh)
 			break
 			;;
 		d)
 			echo -e "${COLOR2}V2Ray Gateway${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray_gate.sh)
+			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/Arch/arch_v2ray_gate.sh)
 			break
 			;;
 		*)
