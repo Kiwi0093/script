@@ -1,14 +1,27 @@
-#------------------------------------------------------------------------------
-#(所有動作都是在change root內完成的)
-#------------------------------------------------------------------------------
-#!/bin/zsh
+#!/bin/sh
 #Parmeter Pre-Define
+#Color for warning
+COLOR_W='\e[35m'
+#Color for description
 COLOR1='\e[94m'
 COLOR2='\e[32m'
+# Color for Highlight package
+COLOR_H1='\e[96m'
+COLOR_H2='\e[34m'
 NC='\e[0m'
 
-#change Timezone to CTS(Taipei)
-echo -e "${COLOR1}Please select your time zone\n1)Taipei\n2)Shanghai\n*)Whatever..I don't care\n${NC}"
+#Notice before use
+echo -e "${COLOR_W}=====================Warning=======================\n${NC}"
+echo -e "${COLOR_W}=  Kiwi's Arch linux Auto install script Ver.1.1  =\n${NC}"
+echo -e "${COLOR_W}=  Simple Arch linus Install script Ver.1.1       =\n${NC}"
+echo -e "${COLOR_W}=  This Script for Kiwi private use.              =\n${NC}"
+echo -e "${COLOR_W}=  If you have any issue on usage,                =\n${NC}"
+echo -e "${COLOR_W}=  Please DON'T Feedback to Kiwi                  =\n${NC}"
+echo -e "${COLOR_W}=  And you should take your own responsibility    =\n${NC}"
+echo -e "${COLOR_W}===================================================\n${NC}"
+
+#change Timezone
+echo -e "${COLOR1}Please select your time zone\n${NC}${COLOR_H1}1)Taipei\n2)Shanghai\n*)Whatever..I don't care\n${NC}"
 while :
 do
 	read ZONE
@@ -34,6 +47,17 @@ do
 done
 echo -e "${COLOR2}Completed${NC}"
 
+#locale-gen to add en_US & zh_TW
+echo -e "${COLOR1}Setting local file${NC}"
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "zh_TW.UTF-8 UTF-8" >> /etc/locale.gen
+echo -e "${COLOR1}Generate locale.conf${NC}"
+locale-gen
+echo -e "${COLOR1}Setting locale.conf${NC}"
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+echo -e "${COLOR2}Completed${NC}"
+
 #Hostname
 echo -e "${COLOR1}Please input your hostname\n${NC}"
 read HOSTNAME
@@ -43,10 +67,10 @@ echo -e "${COLOR2}Completed${NC}"
 
 #Set Mac Address
 echo -e "${COLOR1}Define your NIC by Mac address${NC}"
-echo -e "${COLOR1}Please input your EXT Mac Address:\n${NC}"
+echo -e "${COLOR1}Please input your EXT Mac Address(need to be lowcase):\n${NC}"
 read OUTSIDE
 echo 'SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="'${OUTSIDE}'", NAME="EXT0"' > /etc/udev/rules.d/10-network.rules
-echo -e "${COLOR1}Please input your INT Mac Address:\n${NC}"
+echo -e "${COLOR1}Please input your INT Mac Address(need to be lowcase):\n${NC}"
 read INSIDE
 echo 'SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="'${INSIDE}'", NAME="INT0"' >> /etc/udev/rules.d/10-network.rules
 echo -e "${COLOR2}Completed${NC}"
@@ -65,7 +89,7 @@ netctl enable INT0.service
 echo -e "${COLOR2}Finished.${NC}"
 
 # Set EXT network
-echo -e "${COLOR1}Please select your connection\n1)PPPOE\n2)Static IP\n"
+echo -e "${COLOR1}Please select your connection\n${NC}${COLOR_H1}1)PPPOE\n2)Static IP\n${NC}"
 while
 do
 	read CONNECT
@@ -156,8 +180,8 @@ echo -e "${COLOR2}Completed${NC}"
 
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
-echo -e "${COLOR1}screen${NC}"
-pacman -Sy screen v2ray
+echo -e "${COLOR1}tmux, V2ray ${NC}"
+pacman -Sy tmux v2ray
 echo -e "${COLOR2}Completed${NC}"
 
 #install Bootloader

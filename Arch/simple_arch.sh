@@ -47,6 +47,17 @@ do
 done
 echo -e "${COLOR2}Completed${NC}"
 
+#locale-gen to add en_US & zh_TW
+echo -e "${COLOR1}Setting local file${NC}"
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "zh_TW.UTF-8 UTF-8" >> /etc/locale.gen
+echo -e "${COLOR1}Generate locale.conf${NC}"
+locale-gen
+echo -e "${COLOR1}Setting locale.conf${NC}"
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+echo -e "${COLOR2}Completed${NC}"
+
 #Hostname
 echo -e "${COLOR1}Please input your hostname\n${NC}"
 read HOSTNAME
@@ -55,7 +66,7 @@ echo "127.0.0.1 localhost ${HOSTNAME}" >> /etc/hosts
 echo -e "${COLOR2}Completed${NC}"
 
 echo -e "${COLOR1}Define your NIC by Mac address${NC}"
-echo -e "${COLOR1}Please input your MAC Address:\n${NC}"
+echo -e "${COLOR1}Please input your MAC Address(need to be lowcase):\n${NC}"
 read OUTSIDE
 echo 'SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="'${OUTSIDE}'", NAME="EXT0"' > /etc/udev/rules.d/10-network.rules
 echo -e "${COLOR2}Completed${NC}"
@@ -99,9 +110,14 @@ echo -e "${COLOR2}Completed${NC}"
 
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
-echo -e "${COLOR1}screen${NC}"
-pacman -Syu screen
+echo -e "${COLOR1}tmux${NC}"
+pacman -Syu tmux openssh
 echo -e "${COLOR2}Completed${NC}"
+
+#Setup service
+echo -e "${COLOR1} Enable sshd${NC}"
+systemctl enable sshd.service
+echo -e "${COLOR2}sshd enabled${NC}"
 
 #install Bootloader
 echo -e "${COLOR1}Install grub Boot Loader into /dev/sda${NC}"
