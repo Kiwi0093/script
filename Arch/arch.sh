@@ -1,11 +1,23 @@
-#------------------------------------------------------------------------------
-#(從Iso boot後直到完成change root內所有安裝/調整動作)
-#------------------------------------------------------------------------------
-#!/bin/zsh
+#!/bin/sh
 #Parmeter Pre-Define
+#Color for warning
+COLOR_W='\e[35m'
+#Color for description
 COLOR1='\e[94m'
 COLOR2='\e[32m'
+# Color for Highlight package
+COLOR_H1='\e[96m'
+COLOR_H2='\e[34m'
 NC='\e[0m'
+
+#Notice before use
+echo -e "${COLOR_W}=====================Warning=======================\n${NC}"
+echo -e "${COLOR_W}=  Kiwi's Arch linux Auto install script Ver.1.1  =\n${NC}"
+echo -e "${COLOR_W}=  This Script for Kiwi private use.              =\n${NC}"
+echo -e "${COLOR_W}=  If you have any issue on usage,                =\n${NC}"
+echo -e "${COLOR_W}=  Please DON'T Feedback to Kiwi                  =\n${NC}"
+echo -e "${COLOR_W}=  And you should take your own responsibility    =\n${NC}"
+echo -e "${COLOR_W}===================================================\n${NC}"
 
 #start ntp
 echo -e "${COLOR1}Starting NTP Service${NC}"
@@ -13,8 +25,7 @@ timedatectl set-ntp true
 echo -e "${COLOR2}NTP Setup Completed${NC}"
 
 #Modify Mirrorlist to setting country
-echo -e "${COLOR1}Starting Modify mirrorlist to China servers${NC}"
-echo -n "${COLOR1}Please Select the country you want to set for mirror list\nC)China\nT)Taiwan\n*)whatever..I don't care\n${NC}"
+echo -n "${COLOR1}Please Select the country you want to set for mirror list\n${NC}${COLOR_H1}C)China\nT)Taiwan\n*)whatever..I don't care\n${NC}"
 while :
 do
 	read COUNTRY
@@ -38,7 +49,7 @@ done
 echo -e "${COLOR2}Completed${NC}"
 
 #Fdisk
-echo -e "${COLOR1}Partition your HDD please create 1 data as sda1 and 1 swap as sda2${NC}"
+echo -e "${COLOR1}Partition your HDD please create sda1 for Data and sda2 for Swap.${NC}"
 fdisk /dev/sda
 echo -e "${COLOR2}Partition Setup Completed${NC}"
 
@@ -58,7 +69,7 @@ echo -e "${COLOR2}Completed${NC}"
 
 #Install
 echo -e "${COLOR1}Starting Install Archlinux into /mnt${NC}"
-echo -e "${COLOR1}Please select your CPU vendor and Linux Kernel you want:\n1)Intel+Linux\n2)Intel+Linux-LTS\n3)Amd+Linux\n4)Amd+Linux-LTS\n5)Linux-LTS Kernel\n*)Whatever, Normal Linux Kernel is good enough to me\n${NC}"
+echo -e "${COLOR1}Please select your CPU vendor and Linux Kernel you want:\n${NC}${COLOR_H1}1)Intel+Linux\n2)Intel+Linux-LTS\n3)Amd+Linux\n4)Amd+Linux-LTS\n5)Linux-LTS Kernel\n*)Whatever, Normal Linux Kernel is good enough to me\n${NC}"
 while :
 do
 	read CPU
@@ -113,7 +124,7 @@ echo "${COLOR1}Starting Copy ZSH setting file to new Archlinux${NC}"
 cp -Rv /etc/zsh /mnt/etc/
 echo -e "${COLOR2}Completed${NC}"
 
-echo -n "${COLOR1}Please select which type you want\na)Simple Server\nb)Nextcloud Server\nc)V2Ray Server\nd)V2Ray Gateway\ne)Kiwi's private router\n*)I'm the best! let me do by my own!!\n${NC}"
+echo -n "${COLOR1}Please select which type you want\na)Simple Server\nb)Nextcloud Server\nc)V2Ray Server\nd)V2Ray Gateway\n*)I'm the best! let me do by my own!!\n${NC}"
 while :
 do
 	read SCRIPT
@@ -136,11 +147,6 @@ do
 		d)
 			echo -e "${COLOR2}V2Ray Gateway${NC}"
 			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray_gate.sh)
-			break
-			;;
-		e)
-			echo -e "${COLOR2}Kiwi's Private Router${NC}"
-			arch-chroot /mnt /bin/zsh <(curl -L -s https://Kiwi0093.github.io/script/arch_v2ray_gate_k.sh)
 			break
 			;;
 		*)

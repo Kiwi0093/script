@@ -1,14 +1,27 @@
-#------------------------------------------------------------------------------
-#(所有動作都是在change root內完成的)
-#------------------------------------------------------------------------------
-#!/bin/zsh
+#!/bin/sh
 #Parmeter Pre-Define
+#Color for warning
+COLOR_W='\e[35m'
+#Color for description
 COLOR1='\e[94m'
 COLOR2='\e[32m'
+# Color for Highlight package
+COLOR_H1='\e[96m'
+COLOR_H2='\e[34m'
 NC='\e[0m'
 
-#change Timezone to CTS(Taipei)
-echo -e "${COLOR1}Please select your time zone\n1)Taipei\n2)Shanghai\n*)Whatever..I don't care\n${NC}"
+#Notice before use
+echo -e "${COLOR_W}=====================Warning=======================\n${NC}"
+echo -e "${COLOR_W}=  Kiwi's Arch linux Auto install script Ver.1.1  =\n${NC}"
+echo -e "${COLOR_W}=  Simple Arch linus Install script Ver.1.1       =\n${NC}"
+echo -e "${COLOR_W}=  This Script for Kiwi private use.              =\n${NC}"
+echo -e "${COLOR_W}=  If you have any issue on usage,                =\n${NC}"
+echo -e "${COLOR_W}=  Please DON'T Feedback to Kiwi                  =\n${NC}"
+echo -e "${COLOR_W}=  And you should take your own responsibility    =\n${NC}"
+echo -e "${COLOR_W}===================================================\n${NC}"
+
+#change Timezone
+echo -e "${COLOR1}Please select your time zone\n${NC}${COLOR_H1}1)Taipei\n2)Shanghai\n*)Whatever..I don't care\n${NC}"
 while :
 do
 	read ZONE
