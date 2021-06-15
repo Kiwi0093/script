@@ -13,7 +13,7 @@ NC='\e[0m'
 #Notice before use
 echo -e "${COLOR_W}=====================Warning=======================\n${NC}"
 echo -e "${COLOR_W}=  Kiwi's Arch linux Auto install script Ver.1.1  =\n${NC}"
-echo -e "${COLOR_W}=  Simple Arch linus Install script Ver.1.1       =\n${NC}"
+echo -e "${COLOR_W}=  Simple Arch linux Install script Ver.1.1       =\n${NC}"
 echo -e "${COLOR_W}=  This Script for Kiwi private use.              =\n${NC}"
 echo -e "${COLOR_W}=  If you have any issue on usage,                =\n${NC}"
 echo -e "${COLOR_W}=  Please DON'T Feedback to Kiwi                  =\n${NC}"
@@ -111,7 +111,7 @@ echo -e "${COLOR2}Completed${NC}"
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
 echo -e "${COLOR1}tmux${NC}"
-pacman -Syu tmux openssh
+pacman -Syu tmux
 echo -e "${COLOR2}Completed${NC}"
 
 #Setup service

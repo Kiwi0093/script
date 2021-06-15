@@ -13,7 +13,7 @@ NC='\e[0m'
 #Notice before use
 echo -e "${COLOR_W}=====================Warning=======================\n${NC}"
 echo -e "${COLOR_W}=  Kiwi's Arch linux Auto install script Ver.1.1  =\n${NC}"
-echo -e "${COLOR_W}=  Simple Arch linus Install script Ver.1.1       =\n${NC}"
+echo -e "${COLOR_W}=  Arch + Nextcloud Install script Ver.1.0        =\n${NC}"
 echo -e "${COLOR_W}=  This Script for Kiwi private use.              =\n${NC}"
 echo -e "${COLOR_W}=  If you have any issue on usage,                =\n${NC}"
 echo -e "${COLOR_W}=  Please DON'T Feedback to Kiwi                  =\n${NC}"
@@ -110,16 +110,30 @@ echo -e "${COLOR2}Completed${NC}"
 
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
-echo -e "${COLOR1}tmux v2ray certbot${NC}"
-pacman -Syu tmux v2ray certbot
+echo -e "${COLOR1}tmux${NC}"
+pacman -Syu tmux mariadb php nginx certbot certbot-nginx nextcloud
 echo -e "${COLOR2}Completed${NC}"
 
 #Setup service
+mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+systemctl enable mariadb.service
+echo "[client]" >> /etc/my.conf
+echo "default-character-set=utf8mb4" >> /etc/my.conf
+echo "" >> /etc/my.conf
+echo "[mysql]" >> /etc/my.conf
+echo "default-character-set=utf8mb4" >> /etc/my.conf
+echo "" >> /etc/my.conf
+echo "[mysqld]" >> /etc/my.conf
+echo "collation-server = utf8mb4_unicode_520_ci" >> /etc/my.conf
+echo "init-connect='SET NAMES utf8mb4'" >> /etc/my.conf
+echo "character-set-server = utf8mb4" >> /etc/my.conf
+mysqladmin create nextcloud
+
+
+
 echo -e "${COLOR1} Enable sshd${NC}"
 systemctl enable sshd.service
 echo -e "${COLOR2}sshd enabled${NC}"
-echo -e "${COLOR1}Setup Cetbot${NC}"
-
 
 #install Bootloader
 echo -e "${COLOR1}Install grub Boot Loader into /dev/sda${NC}"
