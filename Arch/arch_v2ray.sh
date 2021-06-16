@@ -111,7 +111,7 @@ echo -e "${COLOR2}Completed${NC}"
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
 echo -e "${COLOR1}tmux v2ray certbot${NC}"
-pacman -Syu tmux v2ray certbot
+pacman -Syu --noconfirm tmux v2ray certbot
 echo -e "${COLOR2}Completed${NC}"
 
 #Setup service

@@ -111,7 +111,7 @@ echo -e "${COLOR2}Completed${NC}"
 #install Tools
 echo -e "${COLOR1}Install Packages${NC}"
 echo -e "${COLOR1}tmux${NC}"
-pacman -Syu tmux
+pacman -Syu --noconfirm tmux
 echo -e "${COLOR2}Completed${NC}"
 
 #Setup service
