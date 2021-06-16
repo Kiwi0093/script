@@ -142,7 +142,7 @@ echo "tmpdir      = /var/lib/mysqltmp" >> /etc/my.cnf
 mount /var/lib/mysqltmp
 systemctl enable mariadb.service
 sudo -u mysql /usr/bin/mariadbd &
-
+echo -e "${COLOR1}MariaDB Deamon Started${NC}"
 mysql_secure_installation
 echo -n "${COLOR1}Please input your Username for Nextcloud Database:\n${NC}"
 read NCUSER
@@ -202,7 +202,7 @@ echo -n "${COLOR1}Please input you Domain for your Nextcloud Server${NC}"
 read NCDOMAIN
 mv /etc/nginx/nginx.conf /etc/nginx.conf.old
 mkdir /etc/nginx/conf.d
-mkdir /etc/nginx/sites-enable
+mkdir /etc/nginx/sites-enabled
 echo "user http;" > /etc/nginx/nginx.conf
 echo "worker_processes auto;" >> /etc/nginx/nginx.conf
 echo "worker_cpu_affinity auto;" >> /etc/nginx/nginx.conf
@@ -260,14 +260,6 @@ echo "    # https://mozilla.github.io/server-side-tls/ssl-config-generator/" >> 
 echo "    ssl_certificate     /etc/ssl/nginx/${NCDOMAIN}.crt;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    ssl_certificate_key /etc/ssl/nginx/${NCDOMAIN}.key;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # HSTS settings" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # WARNING: Only add the preload option once you read about" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # the consequences in https://hstspreload.org/. This option" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # will add the domain to a hardcoded list that is shipped" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # in all major browsers and getting removed from this list" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # could take several months." >> /etc/nginx/sites-enabled/nextcloud
-echo "    #add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;" >> /etc/nginx/sites-enabled/nextcloud
-echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # set max upload size" >> /etc/nginx/sites-enabled/nextcloud
 echo "    client_max_body_size 16G;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    fastcgi_buffers 64 4K;" >> /etc/nginx/sites-enabled/nextcloud
@@ -299,16 +291,6 @@ echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # Path to the root of your installation" >> /etc/nginx/sites-enabled/nextcloud
 echo "    root /var/www/nextcloud;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Specify how to handle directories -- specifying `/index.php$request_uri`" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # here as the fallback means that Nginx always exhibits the desired behaviour" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # when a client requests a path that corresponds to a directory that exists" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # on the server. In particular, if that directory contains an index.php file," >> /etc/nginx/sites-enabled/nextcloud
-echo "    # that file is correctly served; if it doesn't, then the request is passed to" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # the front-end controller. This consistent behaviour means that we don't need" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # to specify custom rules for certain paths (e.g. images and other assets," >> /etc/nginx/sites-enabled/nextcloud
-echo "    # `/updater`, `/ocm-provider`, `/ocs-provider`), and thus" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # `try_files $uri $uri/ /index.php$request_uri`" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # always provides the desired behaviour." >> /etc/nginx/sites-enabled/nextcloud
 echo "    index index.php index.html /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # Rule borrowed from `.htaccess` to handle Microsoft DAV clients" >> /etc/nginx/sites-enabled/nextcloud
@@ -324,10 +306,6 @@ echo "        log_not_found off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "        access_log off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Make a regex exception for `/.well-known` so that clients can still" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # access it despite the existence of the regex rule" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # `location ~ /(\.|autotest|...)` which would otherwise handle requests" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # for `/.well-known`." >> /etc/nginx/sites-enabled/nextcloud
 echo "    location ^~ /.well-known {" >> /etc/nginx/sites-enabled/nextcloud
 echo "        # The rules in this block are an adaptation of the rules" >> /etc/nginx/sites-enabled/nextcloud
 echo "        # in `.htaccess` that concern `/.well-known`." >> /etc/nginx/sites-enabled/nextcloud
@@ -347,10 +325,6 @@ echo "    # Rules borrowed from `.htaccess` to hide certain paths from clients" 
 echo "    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Ensure this block, which passes PHP files to the PHP process, is above the blocks" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # which handle static assets (as seen below). If this block is not declared first," >> /etc/nginx/sites-enabled/nextcloud
-echo "    # then Nginx will encounter an infinite rewriting loop when it prepends `/index.php`" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # to the URI, resulting in a HTTP 500 error response." >> /etc/nginx/sites-enabled/nextcloud
 echo "    location ~ \.php(?:$|/) {" >> /etc/nginx/sites-enabled/nextcloud
 echo "        fastcgi_split_path_info ^(.+?\.php)(/.*)$;" >> /etc/nginx/sites-enabled/nextcloud
 echo "        set $path_info $fastcgi_path_info;" >> /etc/nginx/sites-enabled/nextcloud
