@@ -139,9 +139,9 @@ echo "collation_server = utf8mb4_unicode_ci" >> /etc/my.cnf
 echo "character_set_server = utf8mb4" >> /etc/my.cnf
 echo "tmpdir      = /var/lib/mysqltmp" >> /etc/my.cnf
 mount /var/lib/mysqltmp
-mysql_secure_installation
 systemctl enable mariadb.service
-systemctl start mariadb.service
+sudo -u mysql /usr/bin/mariadbd
+mysql_secure_installation
 echo -n "${COLOR1}Please input your Username for Nextcloud Database:\n${NC}"
 read NCUSER
 echo -n "${COLOR1}Please input your Password for Nextcloud Database User:\n${NC}"
