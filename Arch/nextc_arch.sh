@@ -114,8 +114,8 @@ echo -e "${COLOR1}tmux${NC}"
 pacman -Syu --noconfirm git go base-devel tmux mariadb php php-apcu php-fpm php-gd php-imap php-intl php-imagick nginx certbot certbot-nginx nextcloud
 echo -e "${COLOR2}Completed${NC}"
 echo -e "${COLOR1}Install yay${NC}"
-git clone https://aur.archlinux.org/yay.git
 cd /root
+git clone https://aur.archlinux.org/yay.git
 chomd 777 yay
 cd yay
 sudo -u kiwi makepkg -si
@@ -142,6 +142,7 @@ echo "tmpdir      = /var/lib/mysqltmp" >> /etc/my.cnf
 mount /var/lib/mysqltmp
 systemctl enable mariadb.service
 sudo -u mysql /usr/bin/mariadbd &
+
 mysql_secure_installation
 echo -n "${COLOR1}Please input your Username for Nextcloud Database:\n${NC}"
 read NCUSER
