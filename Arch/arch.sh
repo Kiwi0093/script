@@ -77,37 +77,37 @@ do
 	1)
 		echo -e "${COLOR2}Linux Kernel＋Intel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools net-tools openssh
+		pacstrap /mnt base linux linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools net-tools openssh sudo
 		break
 		;;
 	2)
 		echo -e "${COLOR2}Linux-LTS Kernel＋Intel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools net-tools openssh
+		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl intel-ucode grub dnsutils open-vm-tools net-tools openssh sudo
 		break
 		;;
 	3)
 		echo -e "${COLOR2}Linux Kernel＋Amd${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools net-tools openssh
+		pacstrap /mnt base linux linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools net-tools openssh sudo
 		break
 		;;
 	4)
 		echo -e "${COLOR2}Linux-LTS Kernel＋Amd${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools net-tools openssh
+		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl amd-ucode grub dnsutils open-vm-tools net-tools openssh sudo
 		break
 		;;
 	5)
 		echo -e "${COLOR2}Linux-LTS Kernel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools net-tools openssh
+		pacstrap /mnt base linux-lts linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools net-tools openssh sudo
 		break
 		;;
 	*)
 		echo -e "${COLOR2}Linux Kernel${NC}"
 		pacman -Syyu
-		pacstrap /mnt base linux linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools net-tools openssh
+		pacstrap /mnt base linux linux-firmware vim zsh curl netctl grub dnsutils open-vm-tools net-tools openssh sudo
 		break
 		;;
 	esac
@@ -122,6 +122,8 @@ echo -e "${COLOR2}Completed${NC}"
 #Copy Zsh
 echo "${COLOR1}Starting Copy ZSH setting file to new Archlinux${NC}"
 cp -Rv /etc/zsh /mnt/etc/
+echo "alias vi=vim" >> /mnt/etc/zsh/zshrc
+echo "alias ll=ls -la" >> /mnt/etc/zsh/zshrc
 echo -e "${COLOR2}Completed${NC}"
 
 echo -n "${COLOR1}Please select which type you want${NC}${COLOR_H1}\na)Simple Server\nb)Nextcloud Server\nc)V2Ray Server\nd)V2Ray Gateway\n*)I'm the best! let me do by my own!!\n${NC}"

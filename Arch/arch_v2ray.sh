@@ -104,7 +104,6 @@ passwd ${YOURID}
 echo -e "${COLOR2}Completed${NC}"
 
 echo -e "${COLOR1}Add $YOURID into sudo list${NC}"
-pacman -Syu sudo
 echo "${YOURID} ALL=(ALL) ALL" >> /etc/sudoers
 echo -e "${COLOR2}Completed${NC}"
 
@@ -120,6 +119,10 @@ systemctl enable sshd.service
 echo -e "${COLOR2}sshd enabled${NC}"
 echo -e "${COLOR1}Setup Cetbot${NC}"
 
+#vm-tools
+echo -e "${COLOR1} Enable open-vm-tools${NC}"
+systemctl enable vmtoolsd.service
+echo -e "${COLOR2}vm-tools enabled${NC}"
 
 #install Bootloader
 echo -e "${COLOR1}Install grub Boot Loader into /dev/sda${NC}"

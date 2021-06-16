@@ -104,7 +104,6 @@ passwd ${YOURID}
 echo -e "${COLOR2}Completed${NC}"
 
 echo -e "${COLOR1}Add $YOURID into sudo list${NC}"
-pacman -Syu sudo
 echo "${YOURID} ALL=(ALL) ALL" >> /etc/sudoers
 echo -e "${COLOR2}Completed${NC}"
 
@@ -116,7 +115,7 @@ echo -e "${COLOR2}Completed${NC}"
 echo -e "${COLOR1}Install yay${NC}"
 cd /root
 git clone https://aur.archlinux.org/yay.git
-chomd 777 yay
+chmod 777 yay
 cd yay
 sudo -u kiwi makepkg -si
 rm -rf yay
@@ -142,7 +141,7 @@ echo "tmpdir      = /var/lib/mysqltmp" >> /etc/my.cnf
 mount /var/lib/mysqltmp
 systemctl enable mariadb.service
 sudo -u mysql /usr/bin/mariadbd &
-clear
+echo "\n"
 echo -e "${COLOR1}MariaDB Deamon Started${NC}"
 mysql_secure_installation
 echo -n "${COLOR1}Please input your Username for Nextcloud Database:\n${NC}"
@@ -158,7 +157,7 @@ echo -e "${COLOR2}PHP setting completed${NC}"
 #Setup nextcloud
 echo -e "${COLOR1}Set up Nextcloud${NC}"
 echo "nextcloud ALL=(ALL) ALL" >> /etc/sudoers
-sudo -u nextcloud occ maintenance:install --database mysql --database-name nextcloud --database-host localhost --database-user ${NCUSER} --database-pass=${NCPASSWD} --data-dir /var/lib/nextcloud/data/
+occ maintenance:install --database mysql --database-name nextcloud --database-host localhost --database-user ${NCUSER} --database-pass=${NCPASSWD} --data-dir /var/lib/nextcloud/data/
 curl -o /usr/share/webapps/nextcloud/config/config.php https://kiwi0093.github.io/script/Arch/config.php
 echo -e "${COLOR2}nexcloud set up compleated${NC}"
 #Set up PHP-FPM
@@ -364,6 +363,11 @@ echo -e "${COLOR2}SSL set up Completed${NC}"
 echo -e "${COLOR1} Enable sshd${NC}"
 systemctl enable sshd.service
 echo -e "${COLOR2}sshd enabled${NC}"
+
+#vm-tools
+echo -e "${COLOR1} Enable open-vm-tools${NC}"
+systemctl enable vmtoolsd.service
+echo -e "${COLOR2}vm-tools enabled${NC}"
 
 #install Bootloader
 echo -e "${COLOR1}Install grub Boot Loader into /dev/sda${NC}"
