@@ -247,7 +247,7 @@ echo "    listen [::]:80;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    server_name ${NCDOMAIN};" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # Enforce HTTPS" >> /etc/nginx/sites-enabled/nextcloud
-echo "    return 301 https://$server_name$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
+echo '    return 301 https://$server_name$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "}" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "server {" >> /etc/nginx/sites-enabled/nextcloud
@@ -285,11 +285,11 @@ echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # Path to the root of your installation" >> /etc/nginx/sites-enabled/nextcloud
 echo "    root /var/www/nextcloud;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    index index.php index.html /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
+echo '    index index.php index.html /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location = / {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        if ( '$http_user_agent' ~ ^DavClnt ) {" >> /etc/nginx/sites-enabled/nextcloud
-echo "            return 302 /remote.php/webdav/'$is_args$args';" >> /etc/nginx/sites-enabled/nextcloud
+echo '        if ( $http_user_agent ~ ^DavClnt ) {' >> /etc/nginx/sites-enabled/nextcloud
+echo '            return 302 /remote.php/webdav/$is_args$args;' >> /etc/nginx/sites-enabled/nextcloud
 echo "        }" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
@@ -299,29 +299,29 @@ echo "        log_not_found off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "        access_log off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location ^~ /.well-known {" >> /etc/nginx/sites-enabled/nextcloud
+echo '    location ^~ /.well-known {' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "        location = /.well-known/carddav { return 301 /remote.php/dav/; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "        location = /.well-known/caldav  { return 301 /remote.php/dav/; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "        location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }" >> /etc/nginx/sites-enabled/nextcloud
-echo "        location /.well-known/pki-validation    { try_files $uri $uri/ =404; }" >> /etc/nginx/sites-enabled/nextcloud
+echo '        location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }' >> /etc/nginx/sites-enabled/nextcloud
+echo '        location /.well-known/pki-validation    { try_files $uri $uri/ =404; }' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "        return 301 /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
+echo '        return 301 /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:'$|/')  { return 404; }" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }" >> /etc/nginx/sites-enabled/nextcloud
+echo '    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }' >> /etc/nginx/sites-enabled/nextcloud
+echo '    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location ~ \.php(?:'$|/') {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        fastcgi_split_path_info ^(.+?\.php)(/.*)'$';" >> /etc/nginx/sites-enabled/nextcloud
-echo "        set '$path_info' '$fastcgi_path_info';" >> /etc/nginx/sites-enabled/nextcloud
+echo '    location ~ \.php(?:$|/) {' >> /etc/nginx/sites-enabled/nextcloud
+echo '        fastcgi_split_path_info ^(.+?\.php)(/.*)$;' >> /etc/nginx/sites-enabled/nextcloud
+echo '        set $path_info $fastcgi_path_info;' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "        try_files $fastcgi_script_name =404;" >> /etc/nginx/sites-enabled/nextcloud
+echo '        try_files $fastcgi_script_name =404;' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "        include fastcgi_params;" >> /etc/nginx/sites-enabled/nextcloud
-echo "        fastcgi_param SCRIPT_FILENAME $document_root'$fastcgi_script_name';" >> /etc/nginx/sites-enabled/nextcloud
-echo "        fastcgi_param PATH_INFO '$path_info';" >> /etc/nginx/sites-enabled/nextcloud
+echo '        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;' >> /etc/nginx/sites-enabled/nextcloud
+echo '        fastcgi_param PATH_INFO $path_info;' >> /etc/nginx/sites-enabled/nextcloud
 echo "        fastcgi_param HTTPS on;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "        fastcgi_param modHeadersAvailable true;         # Avoid sending the security headers twice" >> /etc/nginx/sites-enabled/nextcloud
@@ -332,24 +332,24 @@ echo "        fastcgi_intercept_errors on;" >> /etc/nginx/sites-enabled/nextclou
 echo "        fastcgi_request_buffering off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location ~ \.(?:css|js|svg|gif)$ {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        try_files '$uri' /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
+echo '    location ~ \.(?:css|js|svg|gif)$ {' >> /etc/nginx/sites-enabled/nextcloud
+echo '        try_files $uri /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "        expires 6M;         # Cache-Control policy borrowed from \`.htaccess\`" >> /etc/nginx/sites-enabled/nextcloud
 echo "        access_log off;     # Optional: Don't log access to assets" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location ~ '\.woff2?$' {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        try_files $uri /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
+echo '    location ~ \.woff2?$ {' >> /etc/nginx/sites-enabled/nextcloud
+echo '        try_files $uri /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "        expires 7d;         # Cache-Control policy borrowed from \`.htaccess\`" >> /etc/nginx/sites-enabled/nextcloud
 echo "        access_log off;     # Optional: Don't log access to assets" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location /remote {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        return 301 /remote.php'$request_uri';" >> /etc/nginx/sites-enabled/nextcloud
+echo '        return 301 /remote.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    location / {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        try_files $uri $uri/ /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
+echo "    location / {" >> /etc/nginx/sitqes-enabled/nextcloud
+echo '        try_files $uri $uri/ /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "}" >> /etc/nginx/sites-enabled/nextcloud
 
