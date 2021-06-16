@@ -255,8 +255,6 @@ echo "    listen 443      ssl http2;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    listen [::]:443 ssl http2;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    server_name ${NCDOMAIN};" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Use Mozilla's guidelines for SSL/TLS settings" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # https://mozilla.github.io/server-side-tls/ssl-config-generator/" >> /etc/nginx/sites-enabled/nextcloud
 echo "    ssl_certificate     /etc/ssl/nginx/${NCDOMAIN}.crt;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    ssl_certificate_key /etc/ssl/nginx/${NCDOMAIN}.key;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
@@ -271,10 +269,6 @@ echo "    gzip_comp_level 4;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    gzip_min_length 256;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+json application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;" >> /etc/nginx/sites-enabled/nextcloud
-echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Pagespeed is not supported by Nextcloud, so if your server is built" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # with the `ngx_pagespeed` module, uncomment this line to disable it." >> /etc/nginx/sites-enabled/nextcloud
-echo "    #pagespeed off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # HTTP response headers borrowed from Nextcloud `.htaccess`" >> /etc/nginx/sites-enabled/nextcloud
 echo "    add_header Referrer-Policy                      "no-referrer"   always;" >> /etc/nginx/sites-enabled/nextcloud
@@ -293,7 +287,6 @@ echo "    root /var/www/nextcloud;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    index index.php index.html /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Rule borrowed from `.htaccess` to handle Microsoft DAV clients" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location = / {" >> /etc/nginx/sites-enabled/nextcloud
 echo "        if ( $http_user_agent ~ ^DavClnt ) {" >> /etc/nginx/sites-enabled/nextcloud
 echo "            return 302 /remote.php/webdav/$is_args$args;" >> /etc/nginx/sites-enabled/nextcloud
@@ -307,8 +300,6 @@ echo "        access_log off;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location ^~ /.well-known {" >> /etc/nginx/sites-enabled/nextcloud
-echo "        # The rules in this block are an adaptation of the rules" >> /etc/nginx/sites-enabled/nextcloud
-echo "        # in `.htaccess` that concern `/.well-known`." >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "        location = /.well-known/carddav { return 301 /remote.php/dav/; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "        location = /.well-known/caldav  { return 301 /remote.php/dav/; }" >> /etc/nginx/sites-enabled/nextcloud
@@ -316,12 +307,9 @@ echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "        location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "        location /.well-known/pki-validation    { try_files $uri $uri/ =404; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "        # Let Nextcloud's API for `/.well-known` URIs handle all other" >> /etc/nginx/sites-enabled/nextcloud
-echo "        # requests by passing them to the front-end controller." >> /etc/nginx/sites-enabled/nextcloud
 echo "        return 301 /index.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Rules borrowed from `.htaccess` to hide certain paths from clients" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
@@ -356,7 +344,6 @@ echo "        expires 7d;         # Cache-Control policy borrowed from `.htacces
 echo "        access_log off;     # Optional: Don't log access to assets" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    # Rule borrowed from `.htaccess`" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location /remote {" >> /etc/nginx/sites-enabled/nextcloud
 echo "        return 301 /remote.php$request_uri;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    }" >> /etc/nginx/sites-enabled/nextcloud
