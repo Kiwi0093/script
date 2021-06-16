@@ -142,6 +142,7 @@ echo "tmpdir      = /var/lib/mysqltmp" >> /etc/my.cnf
 mount /var/lib/mysqltmp
 systemctl enable mariadb.service
 sudo -u mysql /usr/bin/mariadbd &
+clear
 echo -e "${COLOR1}MariaDB Deamon Started${NC}"
 mysql_secure_installation
 echo -n "${COLOR1}Please input your Username for Nextcloud Database:\n${NC}"
@@ -156,8 +157,8 @@ curl -o /etc/php/php.ini https://kiwi0093.github.io/script/Arch/php.ini
 echo -e "${COLOR2}PHP setting completed${NC}"
 #Setup nextcloud
 echo -e "${COLOR1}Set up Nextcloud${NC}"
-echo "nexcloud ALL=(ALL) ALL" >> /etc/sudoers
-sudo -u nextcloud occ maintenance:install --database mysql --database-name nextcloud --database-host localhost --database-user ${NCUSER} --database-pass=<${NCPASSWD}> --data-dir /var/lib/nextcloud/data/
+echo "nextcloud ALL=(ALL) ALL" >> /etc/sudoers
+sudo -u nextcloud occ maintenance:install --database mysql --database-name nextcloud --database-host localhost --database-user ${NCUSER} --database-pass=${NCPASSWD} --data-dir /var/lib/nextcloud/data/
 curl -o /usr/share/webapps/nextcloud/config/config.php https://kiwi0093.github.io/script/Arch/config.php
 echo -e "${COLOR2}nexcloud set up compleated${NC}"
 #Set up PHP-FPM
@@ -181,18 +182,18 @@ echo "pm.max_spare_servers = 3" >> /etc/php/php-fpm.d/nextcloud.conf
 
 mkdir /etc/systemd/system/php-fpm.service.d/
 echo "[Service]" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "# Your data directory" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "ReadWritePaths=/var/lib/nextcloud/data" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "# Optional: add if you've set the default apps directory to be writable in config.php" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "ReadWritePaths=/usr/share/webapps/nextcloud/apps" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "# Optional: unnecessary if you've set 'config_is_read_only' => true in your config.php" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "ReadWritePaths=/usr/share/webapps/nextcloud/config" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "ReadWritePaths=/etc/webapps/nextcloud/config" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "# Optional: add if you want to use Nextcloud's internal update process" > /etc/systemd/system/php-fpm.service.d/override.conf
-echo "# ReadWritePaths=/usr/share/webapps/nextcloud" > /etc/systemd/system/php-fpm.service.d/override.conf
+echo "# Your data directory" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "ReadWritePaths=/var/lib/nextcloud/data" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "# Optional: add if you've set the default apps directory to be writable in config.php" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "ReadWritePaths=/usr/share/webapps/nextcloud/apps" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "# Optional: unnecessary if you've set 'config_is_read_only' => true in your config.php" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "ReadWritePaths=/usr/share/webapps/nextcloud/config" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "ReadWritePaths=/etc/webapps/nextcloud/config" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "# Optional: add if you want to use Nextcloud's internal update process" >> /etc/systemd/system/php-fpm.service.d/override.conf
+echo "# ReadWritePaths=/usr/share/webapps/nextcloud" >> /etc/systemd/system/php-fpm.service.d/override.conf
 systemctl enable php-fpm.service
 echo -e "${COLOR2}PHP-FPM setting completed${NC}"
 
@@ -236,7 +237,7 @@ echo "    include /etc/nginx/sites-enabled/*;" >> /etc/nginx/nginx.conf
 echo "}" >> /etc/nginx/nginx.conf
 
 echo "upstream php-handler {" > /etc/nginx/sites-enabled/nextcloud
-echo "    unix:/run/nextcloud/nextcloud.sock;" >> /etc/nginx/sites-enabled/nextcloud
+echo "    server unix:/run/nextcloud/nextcloud.sock;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    #server unix:/var/run/php/php7.4-fpm.sock;" >> /etc/nginx/sites-enabled/nextcloud
 echo "}" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
