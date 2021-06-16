@@ -235,9 +235,8 @@ echo "    include /etc/nginx/conf.d/*.conf;" >> /etc/nginx/nginx.conf
 echo "    include /etc/nginx/sites-enabled/*;" >> /etc/nginx/nginx.conf
 echo "}" >> /etc/nginx/nginx.conf
 
-
 echo "upstream php-handler {" > /etc/nginx/sites-enabled/nextcloud
-echo "    server 127.0.0.1:9000;" >> /etc/nginx/sites-enabled/nextcloud
+echo "    unix:/run/nextcloud/nextcloud.sock;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    #server unix:/var/run/php/php7.4-fpm.sock;" >> /etc/nginx/sites-enabled/nextcloud
 echo "}" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
@@ -255,8 +254,8 @@ echo "    listen 443      ssl http2;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    listen [::]:443 ssl http2;" >> /etc/nginx/sites-enabled/nextcloud
 echo "    server_name ${NCDOMAIN};" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
-echo "    ssl_certificate     /etc/ssl/nginx/${NCDOMAIN}.crt;" >> /etc/nginx/sites-enabled/nextcloud
-echo "    ssl_certificate_key /etc/ssl/nginx/${NCDOMAIN}.key;" >> /etc/nginx/sites-enabled/nextcloud
+echo "    ssl_certificate     /etc/letsencrypt/live/${NCDOMAIN}/fullchain.pem;" >> /etc/nginx/sites-enabled/nextcloud
+echo "    ssl_certificate_key /etc/letsencrypt/live/${NCDOMAIN}/privkey.pem;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # set max upload size" >> /etc/nginx/sites-enabled/nextcloud
 echo "    client_max_body_size 16G;" >> /etc/nginx/sites-enabled/nextcloud
@@ -283,7 +282,7 @@ echo "    # Remove X-Powered-By, which is an information leak" >> /etc/nginx/sit
 echo "    fastcgi_hide_header X-Powered-By;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    # Path to the root of your installation" >> /etc/nginx/sites-enabled/nextcloud
-echo "    root /var/www/nextcloud;" >> /etc/nginx/sites-enabled/nextcloud
+echo "    root /usr/share/webapps/nextcloud;" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo '    index index.php index.html /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
@@ -350,7 +349,6 @@ echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "" >> /etc/nginx/sites-enabled/nextcloud
 echo "    location / {" >> /etc/nginx/sitqes-enabled/nextcloud
 echo '        try_files $uri $uri/ /index.php$request_uri;' >> /etc/nginx/sites-enabled/nextcloud
-echo "    }" >> /etc/nginx/sites-enabled/nextcloud
 echo "}" >> /etc/nginx/sites-enabled/nextcloud
 
 systemctl enable nginx.service
@@ -358,7 +356,7 @@ echo -e "${COLOR2}Nginx setup complted${NC}"
 
 #set up certbot
 echo -e "${COLOR1}Set up Cetbot for SSL${NC}"
-certbot --nginx -d ${NCDOMAIN}
+certbot certonly -d ${NCDOMAIN}
 echo -e "${COLOR2}SSL set up Completed${NC}"
 
 #sshd
