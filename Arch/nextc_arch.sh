@@ -156,7 +156,6 @@ curl -o /etc/php/php.ini https://kiwi0093.github.io/script/Arch/php.ini
 echo -e "${COLOR2}PHP setting completed${NC}"
 #Setup nextcloud
 echo -e "${COLOR1}Set up Nextcloud${NC}"
-echo "nextcloud ALL=(ALL) ALL" >> /etc/sudoers
 occ maintenance:install --database mysql --database-name nextcloud --database-host localhost --database-user ${NCUSER} --database-pass=${NCPASSWD} --data-dir /var/lib/nextcloud/data/
 curl -o /usr/share/webapps/nextcloud/config/config.php https://kiwi0093.github.io/script/Arch/config.php
 echo -e "${COLOR2}nexcloud set up compleated${NC}"
@@ -198,7 +197,7 @@ echo -e "${COLOR2}PHP-FPM setting completed${NC}"
 
 #set up nginx
 echo -e "${COLOR1}Set up Nginx${NC}"
-echo -n "${COLOR1}Please input you Domain for your Nextcloud Server${NC}"
+echo -n "${COLOR1}Please input you Domain for your Nextcloud Server(lowcase for all) :\n${NC}"
 read NCDOMAIN
 mv /etc/nginx/nginx.conf /etc/nginx.conf.old
 mkdir /etc/nginx/conf.d
