@@ -58,36 +58,23 @@ sudo pacman -Syyu
 
 # Install Basic tools
 echo -e "${COLOR1}Install Packages${NC}"
-sudo pacman -S --noconfirm yay gcc make patch fakeroot binutils neofetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc zsh zsh-syntax-highlighting zsh-autosuggestions zsh-theme-powerlevel10k awesome-terminal-fonts v2ray putty filezilla remmina freerdp git gnome-pie
-echo -e "${COLOR1}Do you need pre-download ttf files for ${COLOR_H2}ttf-meslo-nerd-font-powerlevel10k${NC}\n ${COLOR_H1}Y) Yes\n N) No need.\n >${NC}"
+sudo pacman -S --noconfirm yay gcc make patch fakeroot binutils fastfetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc putty filezilla remmina freerdp git gnome-pie
+
+# Install Brave
+echo -e "${COLOR1}Do you install Manjaro as a guest OS of VMware?${COLOR_H1}Y) Yes\n N) No\n >${NC}"
 while :
 do
-	read TTF
-	case $TTF in
+	read vGUEST
+	case $vGUEST in
 		Y)
-			echo -e "${COLOR2}Download TTF files for install Issue${NC}"
-			mkdir ~/.cache/yay/
-			mkdir ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k
-			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Bold-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Bold-1.000.ttf
-			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Bold-Italic-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Bold-Italic-1.000.ttf
-			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Italic-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Italic-1.000.ttf
-			curl -o ~/.cache/yay/ttf-meslo-nerd-font-powerlevel10k/MesloLGS-NF-Regular-1.000.ttf https://Kiwi0093.github.io/script/Manjaro/MesloLGS-NF-Regular-1.000.ttf
-			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
-			# Download Zeon.ttf & Install
-			echo -e "${COLOR2}Download & Install Zeon font for Zeon Icon${NC}"
-			sudo mkdir /usr/local/share/fonts
-			sudo mkdir /usr/local/share/fonts/z
-			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
+			echo -e "${COLOR2}Install related packages for Vmware${NC}"
+			sudo pacman -S virtualbox-guest-utils open-vm-tools
+			sudo systemctl enable vmtoolsd.service
+			sudo systemctl enable vmware-vmblock-fuse.service
 			break
 			;;
-		N)
-			echo -e "${COLOR2}Normal Installation${NC}"
-			yay -S --noconfirm ttf-meslo-nerd-font-powerlevel10k
-			# Download Zeon.ttf & Install
-			echo -e "${COLOR2}Download & Install Zeon font for Zeon Icon${NC}"
-			sudo mkdir /usr/local/share/fonts
-			sudo mkdir /usr/local/share/fonts/z
-			sudo curl -o /usr/local/share/fonts/z/zeon.ttf https://Kiwi0093.github.io/script/Manjaro/zeon.ttf
+		N)	
+			echo -e "${COLOR2}Skip VM related packages${NC}"
 			break
 			;;
 		*)
@@ -100,14 +87,14 @@ done
 echo -e "${COLOR1}Prepare to install package via yay${NC}"
 
 # Install Brave
-echo -e "${COLOR1}Do you want to install ${COLOR_H2}Brave-bin${NC} for your browser?\nIt should spend much time\n ${COLOR_H1}Y) Yes\n N) No please skip this \n >${NC}"
+echo -e "${COLOR1}Do you want to install ${COLOR_H2}Brave${NC} for your browser?\nIt should spend much time\n ${COLOR_H1}Y) Yes\n N) No please skip this \n >${NC}"
 while :
 do
 	read BRAVE
 	case $BRAVE in
 		Y)
 			echo -e "${COLOR2}Install Brave-bin via yay${NC}"
-			yay -S --noconfirm brave-bin
+			yay -S --noconfirm brave
 			break
 			;;
 		N)	
@@ -128,11 +115,12 @@ do
 	case $QV2RAY in
 		Y)
 			echo -e "${COLOR2}Install QV2Ray via yay${NC}"
-			yay -S --noconfirm qv2ray
+			yay -S --noconfirm v2ray qv2ray
 			break
 			;;
 		A)
 			echo -e "${COLOR_H1}Please enter Qv2ray Version(ie:2.6.3)${NC}"
+			yay -S --noconfirm v2ray
 			read Q_VERSION
 			echo -e "${COLOR2}Download QV2Ray AppImage from Github${NC}"
 			sudo mkdir /ust/local/Applications
@@ -266,7 +254,7 @@ do
 		Y)
 			echo -e "${COLOR2}Install basic packages for Hexo${NC}"
 			yay -S --noconfirm nodejs npm
-			echo -e "${COLOR1}Do you have set your own Hexo?\n ${COLOR_H1}Y) Yes\n K)I'm Kiwi please apply my setting\n >${NC}"
+			echo -e "${COLOR1}Do you have set your own Hexo?\n ${COLOR_H1}Y) Yes\n K)I'm Kiwi please apply my setting\n N)I don't need Hexo\n >${NC}"
 			while :
 			do
 				read H_SET
@@ -294,6 +282,10 @@ do
 						npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 						break
 						;;
+					N)
+						echo -e "${COLOR2}Skip Hexo Installation${NC}"
+						break
+						;;
 					*)
 						echo -e "${COLOR_H1}Please enter your choice Y or A or N${NC}"
 						;;
@@ -312,18 +304,23 @@ do
 done
 
 # Personal setting
-# change shell to zsh & import powerlevel10k setting
+# change shell to zsh
 echo -e "${COLOR2}Change default shell to zsh${NC}"
 sudo chsh -s /bin/zsh
 chsh -s /bin/zsh
-
-# download setting and apply
-echo -e "${COLOR2}Download and apply powerlevel10k setting${NC}"
-sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
-sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
-sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
+mv ~/.zshrc /etc/zsh/zshrc
+echo "alias vi=vim" >> /etc/zsh/zshrc
+echo "alias ll= ls -la" >> /etc/zsh/zshrc
 sudo cp /etc/zsh/zshrc /root/.zshrc
 cp /etc/zsh/zshrc ~/.zshrc
+
+# download setting and apply
+#echo -e "${COLOR2}Download and apply powerlevel10k setting${NC}"
+#sudo curl -o /etc/zsh/zshrc https://kiwi0093.github.io/script/Manjaro/zsh/zshrc
+#sudo curl -o /etc/zsh/aliasrc https://kiwi0093.github.io/script/Manjaro/zsh/aliasrc
+#sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
+#sudo cp /etc/zsh/zshrc /root/.zshrc
+#cp /etc/zsh/zshrc ~/.zshrc
 
 
 # Chinese Input ENV Setting
@@ -473,20 +470,20 @@ do
 done
 
 # Install Kde Plasmaoid
-echo -e "${COLOR1}Install KDE plasma Widget & Splash\n${NC}"
-if [ -d "/usr/include/plasma" ];then
-	echo -e "${COLOR2}KDE Plasma Found${NC}"
-	curl -o plasma-simpleMonitor-v0.6.plasmoid https://Kiwi0093.github.io/script/Manjaro/plasma-simpleMonitor-v0.6.plasmoid
-	plasmapkg2 -i plasma-simpleMonitor-v0.6.plasmoid ~/.local/share/plasma/plasmoids/
-	rm -f plasma-simpleMonitor-v0.6.plasmoid
-	curl -o  VioletEvergarden-Splash.tar.gz https://Kiwi0093.github.io/script/Manjaro/VioletEvergarden-Splash.tar.gz
-	plasmapkg2 -i VioletEvergarden-Splash.tar.gz ~/.local/share/plasma/look-and-feel/
-	rm -f VioletEvergarden-Splash.tar.gz
-	curl -o  plasma-org.kde.plasma.desktop-appletsrc https://Kiwi0093.github.io/script/Manjaro/plasma-org.kde.plasma.desktop-appletsrc
-	mv ./plasma-org.kde.plasma.desktop-appletsrc ~/.config/
-else
-	echo -e "${COLOR2}KDE Plasma NOT found${NC}"
-fi
+#echo -e "${COLOR1}Install KDE plasma Widget & Splash\n${NC}"
+#if [ -d "/usr/include/plasma" ];then
+#	echo -e "${COLOR2}KDE Plasma Found${NC}"
+#	curl -o plasma-simpleMonitor-v0.6.plasmoid https://Kiwi0093.github.io/script/Manjaro/plasma-simpleMonitor-v0.6.plasmoid
+#	plasmapkg2 -i plasma-simpleMonitor-v0.6.plasmoid ~/.local/share/plasma/plasmoids/
+#	rm -f plasma-simpleMonitor-v0.6.plasmoid
+#	curl -o  VioletEvergarden-Splash.tar.gz https://Kiwi0093.github.io/script/Manjaro/VioletEvergarden-Splash.tar.gz
+#	plasmapkg2 -i VioletEvergarden-Splash.tar.gz ~/.local/share/plasma/look-and-feel/
+#	rm -f VioletEvergarden-Splash.tar.gz
+#	curl -o  plasma-org.kde.plasma.desktop-appletsrc https://Kiwi0093.github.io/script/Manjaro/plasma-org.kde.plasma.desktop-appletsrc
+#	mv ./plasma-org.kde.plasma.desktop-appletsrc ~/.config/
+#else
+#	echo -e "${COLOR2}KDE Plasma NOT found${NC}"
+#fi
 
 
 
