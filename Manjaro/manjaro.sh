@@ -58,7 +58,7 @@ sudo pacman -Syyu
 
 # Install Basic tools
 echo -e "${COLOR1}Install Packages${NC}"
-sudo pacman -S --noconfirm yay gcc make patch fakeroot binutils fastfetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc putty filezilla remmina freerdp git gnome-pie
+sudo pacman -S --noconfirm yay tmux gcc make patch fakeroot binutils fastfetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc putty filezilla remmina freerdp git gnome-pie
 
 # Install Brave
 echo -e "${COLOR1}Do you install Manjaro as a guest OS of VMware?${COLOR_H1}Y) Yes\n N) No\n >${NC}"
@@ -321,7 +321,10 @@ cp /etc/zsh/zshrc ~/.zshrc
 #sudo curl -o /etc/zsh/p10k.zsh https://Kiwi0093.github.io/script/Manjaro/zsh/p10k.zsh
 #sudo cp /etc/zsh/zshrc /root/.zshrc
 #cp /etc/zsh/zshrc ~/.zshrc
-
+cd
+git clone https://github.com/gpakosz/.tmux.git
+ln -s -f .tmux/.tmux.conf
+cp .tmux/.tmux.conf.local .
 
 # Chinese Input ENV Setting
 echo -e "${COLOR2}Setting Fcitx Chinese Input ENV ${NC}"
