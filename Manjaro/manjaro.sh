@@ -413,7 +413,7 @@ do
 done
 
 # Open restart picgo setting
-echo -e "${COLOR1}Are you Kiwi?\nIf you are, do you need to SYNC your private ${COLOR_H2}Picgo${NC} setting\n ${COLOR_H1}Y) Yes\n N) No I don't need\n >${NC}"
+echo -e "${COLOR1}Are you Kiwi?\nIf you are, do you need to SYNC your private ${COLOR_H2}P icgo${NC} setting\n ${COLOR_H1}Y) Yes\n N) No I don't need\n >${NC}"
 while :
 do
         read P_SET
