@@ -17,7 +17,70 @@ echo -e "${COLOR_W}=  If you have any issue on usage,              =\n${NC}"
 echo -e "${COLOR_W}=  Please DON'T Feedback to Kiwi                =\n${NC}"
 echo -e "${COLOR_W}=  And you should take your own responsibility  =\n${NC}"
 echo -e "${COLOR_W}=================================================\n${NC}"
+echo -e ""
+echo -e ""
+echo -e "${COLOR_W}Do you accept all risk by using this script should be taken by yourown?\nPlease type Y/y/yes for YES, N/n/no for NO${NC}"
+while :
+do
+	read ACCEPT
+	case $ACCEPT in
+		Y)
+			echo -e "${COLOR2}Thank you for using this script${NC}" 
+			break
+			;;
+		y)
+			echo -e "${COLOR2}Thank you for using this script${NC}" 
+			break
+			;;
+		yes)
+			echo -e "${COLOR2}Thank you for using this script${NC}" 
+			break
+			;;
+		N)
+			echo -e "${COLOR2}Bye~${NC}" 
+			exit
+			;;
+		n)
+			echo -e "${COLOR2}Bye~${NC}" 
+			exit
+			;;
+		no)
+			echo -e "${COLOR2}Bye~${NC}" 
+			exit
+			;;
+		*)
+			echo -e "${COLOR_H1}Please enter your Y or N${NC}"
+			;;
+	esac
+done
 
+# display Logo
+echo -ne "
+------------------------------------------------------------------------------
+██╗░░██╗██╗░██╗░░░░░░░██╗██╗  ███████╗██████╗░██╗████████╗██╗░█████╗░███╗░░██╗
+██║░██╔╝██║░██║░░██╗░░██║██║  ██╔════╝██╔══██╗██║╚══██╔══╝██║██╔══██╗████╗░██║
+█████═╝░██║░╚██╗████╗██╔╝██║  █████╗░░██║░░██║██║░░░██║░░░██║██║░░██║██╔██╗██║
+██╔═██╗░██║░░████╔═████║░██║  ██╔══╝░░██║░░██║██║░░░██║░░░██║██║░░██║██║╚████║
+██║░╚██╗██║░░╚██╔╝░╚██╔╝░██║  ███████╗██████╔╝██║░░░██║░░░██║╚█████╔╝██║░╚███║
+╚═╝░░╚═╝╚═╝░░░╚═╝░░░╚═╝░░╚═╝  ╚══════╝╚═════╝░╚═╝░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝
+------------------------------------------------------------------------------
+              Automatic Manjaro Configuration Sctipt
+------------------------------------------------------------------------------
+                   Create & Modified by Kiwi Lin
+
+"
+# ENV Configuration
+echo -ne "
+------------------------------------------------------------------------------
+
+██████╗░░█████╗░░██████╗██╗░█████╗░  ░██████╗███████╗████████╗██╗░░░██╗██████╗░
+██╔══██╗██╔══██╗██╔════╝██║██╔══██╗  ██╔════╝██╔════╝╚══██╔══╝██║░░░██║██╔══██╗
+██████╦╝███████║╚█████╗░██║██║░░╚═╝  ╚█████╗░█████╗░░░░░██║░░░██║░░░██║██████╔╝
+██╔══██╗██╔══██║░╚═══██╗██║██║░░██╗  ░╚═══██╗██╔══╝░░░░░██║░░░██║░░░██║██╔═══╝░
+██████╦╝██║░░██║██████╔╝██║╚█████╔╝  ██████╔╝███████╗░░░██║░░░╚██████╔╝██║░░░░░
+╚═════╝░╚═╝░░╚═╝╚═════╝░╚═╝░╚════╝░  ╚═════╝░╚══════╝░░░╚═╝░░░░╚═════╝░╚═╝░░░░░
+-----------------------------------------------------------------------------
+"
 # Choose Country for pacman-mirrors
 echo -e "${COLOR1}Please choose the loaction you want to set for Mirror\n ${COLOR_H}C) China\n T) Taiwan\n L) Let me type what I want\n F) Fastest Mirror from all country\n Any other) Use Manjaro Default\n >${NC}"
 while :
@@ -58,9 +121,9 @@ sudo pacman -Syyu
 
 # Install Basic tools
 echo -e "${COLOR1}Install Packages${NC}"
-sudo pacman -S --noconfirm yay tmux gcc make patch fakeroot binutils fastfetch vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc putty filezilla remmina freerdp git gnome-pie
+sudo pacman -S --noconfirm yay brave-browser tmux gcc make patch fakeroot binutils vim terminator pkgconf fcitx fcitx-qt5 fcitx-configtool fcitx-chewing fcitx-mozc putty filezilla remmina freerdp git gnome-pie
 
-# Install Brave
+# Setup for VMware VM Guest OS
 echo -e "${COLOR1}Do you install Manjaro as a guest OS of VMware?${COLOR_H1}Y) Yes\n N) No\n >${NC}"
 while :
 do
@@ -84,28 +147,7 @@ do
 done
 
 # Install yay package 
-echo -e "${COLOR1}Prepare to install package via yay${NC}"
-
-# Install Brave
-echo -e "${COLOR1}Do you want to install ${COLOR_H2}Brave${NC} for your browser?\nIt should spend much time\n ${COLOR_H1}Y) Yes\n N) No please skip this \n >${NC}"
-while :
-do
-	read BRAVE
-	case $BRAVE in
-		Y)
-			echo -e "${COLOR2}Install Brave-bin via yay${NC}"
-			yay -S --noconfirm brave
-			break
-			;;
-		N)	
-			echo -e "${COLOR2}Skip Brave installation${NC}"
-			break
-			;;
-		*)
-			echo -e "${COLOR_H1}Please enter your choice Y or A or N${NC}"
-			;;
-	esac
-done
+echo -e "${COLOR1}Prepare to install Option package via yay${NC}"
 
 # Install Qv2ray
 echo -e "${COLOR1}Do you want to install ${COLOR_H2}Qv2ray${NC}?\nIt should spend much time\n ${COLOR_H1}Y) Yes install via yay\n A) Using AppImage version\n N)No Need\n >${NC}"
@@ -159,38 +201,19 @@ do
 	esac
 done
 
-# Install Typora
-echo -e "${COLOR1}Do you want to install ${COLOR_H2}Typora${NC}?\nIt should spend much time\n ${COLOR_H1}Y) Yes\n N) No please skip this\n >${NC}"
+# Install MarkText
+echo -e "${COLOR1}Do you want to install ${COLOR_H2}MarkText${NC}?\nIt should spend much time\n ${COLOR_H1}Y) Yes\n N) No please skip this\n >${NC}"
 while :
 do
-	read TYPORA
+	read MARKTEXT
 	case $TYPORA in
 		Y)
-			echo -e "${COLOR2}Install Typora via yay${NC}"
-			yay -S --noconfirm typora
-			echo -e "${COLOR1}Do you need to Install/Set up ${COLOR_H2}Pigco${NC} for picture upload\n ${COLOR_H1}Y) Yes\n N) Please Skip\n >${NC}"
-			while :
-			do
-				read PICGO
-				case $PICGO in
-					Y)
-						echo -e "${COLOR2}Please install by Typora${NC}"
-						typora
-						break
-						;;
-					N)
-						echo -e "${COLOR2}Skip Picgo${NC}"
-						break
-						;;
-					*)
-						echo -e "${COLOR2}Please enter your choice Y or A or N${NC}"
-						;;
-				esac
-			done
+			echo -e "${COLOR2}Install MarkText via yay${NC}"
+			yay -S --noconfirm marktext
 			break
 			;;
 		N)
-			echo -e "${COLOR2}Skip Typora Installation${NC}"
+			echo -e "${COLOR2}Skip MarkText Installation${NC}"
 			break
 			;;
 		*)
@@ -199,7 +222,7 @@ do
 	esac
 done
 
-# Install VMware Workstation
+# Install Virtual Machine
 echo -e "${COLOR1}Do you want to install ${COLOR_H2}VMware Workstation${NC}?\nIt should spend much time\n ${COLOR_H1}Y) Yes\n N) No please skip this\n >${NC}"
 while :
 do
@@ -412,36 +435,6 @@ do
         esac
 done
 
-# Open restart picgo setting
-echo -e "${COLOR1}Are you Kiwi?\nIf you are, do you need to SYNC your private ${COLOR_H2}P icgo${NC} setting\n ${COLOR_H1}Y) Yes\n N) No I don't need\n >${NC}"
-while :
-do
-        read P_SET
-        case $P_SET in
-                Y)
-                        echo -e "${COLOR1}Check Picgo installed${NC}"
-                        if [ -f "~/.config/Typora/picgo/linux/picgo" ]; then
-                        	echo -e "${COLOR2}Picgo Installed${NC}"
-				curl -o config.json.e https://Kiwi0093.github.io/script/Manjaro/picgo/config.json.e
-                		openssl enc -d -aes256 -in config.json.e -out config.json
-                		mv ./config.json ~/.picgo/
-                		rm config.json.e
-                        else
-                        	echo -e "${COLOR2}No Picgo found${NC}"
-                        	echo -e "${COLOR2}Skip picgo Setting${NC}"
-                        fi
-			break
-			;;
-                N)
-                        echo -e "${COLOR2}Skip Picgo Setting${NC}"
-                        break
-                        ;;
-                *)
-			echo -e "${COLOR_H1}Please enter your choice Y or A or N${NC}"
-                        ;;
-        esac
-done
-
 # Restore Gnome-pie Setting
 echo -e "${COLOR1}Are you Kiwi?\nIf you are, do you need to restore your ${COLOR_H2}gnome-pie${NC} setting\n ${COLOR_H1}Y) Yes\n N) No I don't need\n >${NC}"
 while :
@@ -471,25 +464,3 @@ do
                         ;;
         esac
 done
-
-# Install Kde Plasmaoid
-#echo -e "${COLOR1}Install KDE plasma Widget & Splash\n${NC}"
-#if [ -d "/usr/include/plasma" ];then
-#	echo -e "${COLOR2}KDE Plasma Found${NC}"
-#	curl -o plasma-simpleMonitor-v0.6.plasmoid https://Kiwi0093.github.io/script/Manjaro/plasma-simpleMonitor-v0.6.plasmoid
-#	plasmapkg2 -i plasma-simpleMonitor-v0.6.plasmoid ~/.local/share/plasma/plasmoids/
-#	rm -f plasma-simpleMonitor-v0.6.plasmoid
-#	curl -o  VioletEvergarden-Splash.tar.gz https://Kiwi0093.github.io/script/Manjaro/VioletEvergarden-Splash.tar.gz
-#	plasmapkg2 -i VioletEvergarden-Splash.tar.gz ~/.local/share/plasma/look-and-feel/
-#	rm -f VioletEvergarden-Splash.tar.gz
-#	curl -o  plasma-org.kde.plasma.desktop-appletsrc https://Kiwi0093.github.io/script/Manjaro/plasma-org.kde.plasma.desktop-appletsrc
-#	mv ./plasma-org.kde.plasma.desktop-appletsrc ~/.config/
-#else
-#	echo -e "${COLOR2}KDE Plasma NOT found${NC}"
-#fi
-
-
-
-
-
-			
