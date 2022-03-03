@@ -1,0 +1,23 @@
+#!/bin/sh
+color1='\e[95m'                 # Light Magenta for process step
+color2='\e[96m'                 # Light Cyan for input
+color3='\e[91m'                 # Light Red for warning
+color4='\e[34m'                 # Blue for process completed
+nc='\e[0m'                      # End code
+nc
+
+# Rsync data to NAS
+echo -e "${color1}Prepare to push setting files from NAS via rsync${nc}"
+echo -e "${color2}Please input the password for NAS SSH Password\n${nc}"
+read NASPASSWD
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/rc.conf root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/ipfw.kiwi root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/pf.kiwi root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/ipnat.kiwi root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/ 
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/ipf.kiwi root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/ 
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /usr/share/zsh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /usr/share/zsh-theme-powerlevel10k root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete ~/.zshrc root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/zshrc
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/zprofile root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/
+sshpass -p ${NASPASSWD} rsync -avh -e ssh --delete /etc/profile root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/ 
+echo -e "${color4}Completed.....................${nc}"

@@ -1,0 +1,57 @@
+#!/bin/sh
+color1='\e[95m'                 # Light Magenta for process step
+color2='\e[96m'                 # Light Cyan for input
+color3='\e[91m'                 # Light Red for warning
+color4='\e[34m'                 # Blue for process completed
+nc='\e[0m'                      # End code
+
+echo -e "${color1}${nc}"
+
+# Install pkgs for using
+echo -e "${color1}Installing Application via pkg${nc}"
+pkg install -y zsh git curl sshguard tmux vim rsnyc sshpass powerline-fonts
+echo -e "${color4}Completed.....................${nc}"
+
+# Enable Dummynet
+echo -e "${color1}Enable dummynet for ipfw${nc}"
+echo 'dummynet_enable="YES"' >> /boot/loader.conf
+echo -e "${color4}Completed.....................${nc}"
+
+# Rsync data from NAS
+echo -e "${color1}Prepare to pull setting files from NAS via rsync${nc}"
+echo -e "${color2}Please input the password for NAS SSH Password\n${nc}"
+read NASPASSWD
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/rc.conf /etc/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/ipfw.kiwi /etc/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/pf.kiwi /etc/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/ipnat.kiwi /etc/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/ipf.kiwi /etc/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/motd /etc/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/zsh /usr/share/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/zsh-theme-powerlevel10k /usr/share/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/zshrc /home/kiwi/zshrc
+cp /home/kiwi/zshrc /home/kiwi/.zshrc
+mv /home/kiwi/zshrc /root/.zshrc
+mkdir /etc/zsh
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/zprofile /etc/zsh/
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/profile /etc/
+echo -e "${color4}Completed.....................${nc}"
+
+# System Setting
+echo -e "${color1}System setting${nc}"
+chsh -s zsh
+chsh -s zsh kiwi
+echo -e "${color1}Generate SSH key Pair${nc}"
+ssh-keygen -b 2048 -t rsa -f zeon
+echo -e "${color1}Upload private key to NAS Backup${nc}"
+sshpass -p `${NASPASSWD}` rsync -avh -e ssh /home/kiwi/zeon root@192.168.31.198:/mnt/share01/kiwi/Serevr_Backup/FreeBSD_Gateway/zeon.pem
+cat zeon.pub > /home/kiwi/.ssh/authorized_keys
+echo -e "${color1}Modify sshd_config${nc}"
+echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config
+echo "AuthorizedKeysFile      .ssh/authorized_keys" >> /etc/ssh/sshd_config
+echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
+echo "PermitEmptyPasswords no" >> /etc/ssh/sshd_config
+echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
+echo -e "${color4}Completed.....................${nc}"
+
