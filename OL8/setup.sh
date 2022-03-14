@@ -66,7 +66,7 @@ echo -e "${color1}Basic system configuration started${NC}"
 echo -e "${color1}Update system${NC}"
 yum update -y
 /usr/libexec/oci-growfs -y
-echo -e "${color1}Enable Docker & Amazon Corretto8${NC}"
+echo -e "${color1}Pre-install Docker-ce${NC}"
 dnf install -y dnf-utils zip unzip
 dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 dnf remove -y runc
