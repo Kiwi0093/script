@@ -106,7 +106,7 @@ echo -e "${color4}..............................................................
 # git clone setting from kiwi's private git repo
 echo -e "${color1}Using Kiwi's Private Repo to Configure${NC}"
 echo -e "${color2}Are You Kiwi himself?(Yes/No)${NC}"
-while
+while :
 do
 		read KIWI
 		case $KIWI in
