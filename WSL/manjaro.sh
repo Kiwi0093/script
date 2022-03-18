@@ -62,7 +62,7 @@ echo -e "${color1}Install Basic tools${NC}"
 pacman -S git yay wget curl rsync sshpass zsh manjaro-zsh-config \
 ttf-nerd-fonts-symbols ttf-meslo-nerd-font-powerlevel10k \
 ttf-meslo-nerd-font-powerlevel10k powerline-fonts \
-nerd-fonts-noto-sans-mono vim wireguard-tools systemd-resolvconf --noconfirm 
+nerd-fonts-noto-sans-mono vim wireguard-tools systemd-resolvconf htop --noconfirm 
 echo -e "${color1}Install Xfce4 for GUI${NC}"
 pacman -S xfce4-gtk3 xfce4-goodies xfce4-terminal network-manager-applet \
 xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm \
