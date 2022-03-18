@@ -38,7 +38,7 @@ do
 done
 # Basic system configuration
 echo -e "${color1}Basic system configuration started${NC}"
-echo -e "${color1}Setting your Repo{NC}"
+echo -e "${color1}Setting your Repo${NC}"
 echo -e "${color2}Do you want to set location for the mirror-list?(Y for Location, others for fastest 3 location){NC}"
 while :
 do
@@ -96,11 +96,11 @@ indicators = ~host;~spacer;~clock;~spacer;~language;~session;~a11y;~power" >> /e
 echo -e "${color4}.........................................................................................completed${NC}"
 
 # create user
-echo -e "${color1}Change your root password & shell to zsh{NC}"
+echo -e "${color1}Change your root password & shell to zsh${NC}"
 passwd
 chsh -s /bin/zsh
-echo -e "${color1}Create your User{NC}"
-echo -e "${color2}What User name do you like?\n{NC}"
+echo -e "${color1}Create your User${NC}"
+echo -e "${color2}What User name do you like?\n${NC}"
 read USERN
 useradd -m -g users -G lp,network,power,sys,wheel -s /bin/zsh $USERN
 echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
