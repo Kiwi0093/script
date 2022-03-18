@@ -39,7 +39,7 @@ done
 # Basic system configuration
 echo -e "${color1}Basic system configuration started${NC}"
 echo -e "${color1}Setting your Repo${NC}"
-echo -e "${color2}Do you want to set location for the mirror-list?(Y for Location, others for fastest 3 location){NC}"
+echo -e "${color2}Do you want to set location for the mirror-list?(Y for Location, others for fastest 3 location)${NC}"
 while :
 do
 	read LT
@@ -67,9 +67,9 @@ pacman -S xfce4-gtk3 xfce4-goodies xfce4-terminal network-manager-applet \
 xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm \
 lightdm-gtk-greeter lightdm-gtk-greeter-settings manjaro-xfce-gtk3-settings \
 manjaro-settings-manager --noconfirm
-echo -e "${color1}Install GUI$ tools{NC}"
+echo -e "${color1}Install GUI$ tools${NC}"
 pacman -S terminator brave tigervnc marktext gnome-pie --noconfirm
-echo -e "${color1}Install Chinese Environment{NC}"
+echo -e "${color1}Install Chinese Environment${NC}"
 pacman -S adobe-source-han-serif-tw-fonts adobe-source-han-serif-hk-fonts \
 adobe-source-han-serif-cn-fonts adobe-source-han-sans-tw-fonts \
 adobe-source-han-sans-hk-fonts adobe-source-han-sans-cn-fonts \
