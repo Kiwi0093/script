@@ -59,7 +59,7 @@ done
 echo -e "${color1}Update system${NC}"
 pacman -Syyu
 echo -e "${color1}Install Basic tools${NC}"
-pacman -S git yay wget curl rsnyc sshpass zsh manjaro-zsh-config ttf-nerd-fonts-symbols ttf-meslo-nerd-font-powerlevel10k nerd-fonts-noto-sans-mono vim wireguard-tools --noconfirm 
+pacman -S git yay wget curl rsync sshpass zsh manjaro-zsh-config ttf-nerd-fonts-symbols ttf-meslo-nerd-font-powerlevel10k nerd-fonts-noto-sans-mono vim wireguard-tools --noconfirm 
 echo -e "${color1}Install Xfce4 for GUI${NC}"
 pacman -S xfce4-gtk3 xfce4-goodies xfce4-terminal network-manager-applet xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings manjaro-xfce-gtk3-settings manjaro-settings-manager --noconfirm
 echo -e "${color1}Install GUI$ tools{NC}"
