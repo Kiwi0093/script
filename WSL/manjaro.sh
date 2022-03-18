@@ -47,11 +47,11 @@ do
 		Y)
 			echo -e "${color2}Please input location you want(EX, tw for Taiwan, us for USA)\n${NC}"
 			read LT2
-			pacman-mirror -c $LT2
+			pacman-mirrors -c $LT2
 			break
 			;;
 		*)
-			pacman-mirror --fasttrack 3
+			pacman-mirrors --fasttrack 3
 			break
 			;;
 	esac
