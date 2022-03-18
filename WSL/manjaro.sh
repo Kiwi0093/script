@@ -112,6 +112,12 @@ echo -e "${color1}Change your root password & shell to zsh${NC}"
 sudo -u $USERN yay -S marktext-appimg
 # sysytemd
 echo -e "${color1}Change your root password & shell to zsh${NC}"
-sudo -u $USERN yay genie-systemd-git 
+sudo -u $USERN yay -S genie-systemd-git 
 echo 'genie -i' > /etc/init.wsl
 chmod +x /etc/init.wsl
+genie -i
+systemctl disable auditd.service
+systemctl disable multipathd.service
+systemctl disable systemd-modules-load.service
+systemctl enable systemd-resolved.service
+
