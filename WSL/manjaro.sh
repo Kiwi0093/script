@@ -68,7 +68,7 @@ xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm \
 lightdm-gtk-greeter lightdm-gtk-greeter-settings manjaro-xfce-gtk3-settings \
 manjaro-settings-manager --noconfirm
 echo -e "${color1}Install GUI$ tools${NC}"
-pacman -S terminator brave tigervnc marktext gnome-pie --noconfirm
+pacman -S terminator brave-browser tigervnc marktext gnome-pie --noconfirm
 echo -e "${color1}Install Chinese Environment${NC}"
 pacman -S adobe-source-han-serif-tw-fonts adobe-source-han-serif-hk-fonts \
 adobe-source-han-serif-cn-fonts adobe-source-han-sans-tw-fonts \
