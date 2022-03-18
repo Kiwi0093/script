@@ -68,7 +68,7 @@ xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm \
 lightdm-gtk-greeter lightdm-gtk-greeter-settings manjaro-xfce-gtk3-settings \
 manjaro-settings-manager --noconfirm
 echo -e "${color1}Install GUI$ tools${NC}"
-pacman -S terminator brave-browser tigervnc marktext gnome-pie --noconfirm
+pacman -S terminator brave-browser tigervnc gnome-pie --noconfirm
 echo -e "${color1}Install Chinese Environment${NC}"
 pacman -S adobe-source-han-serif-tw-fonts adobe-source-han-serif-hk-fonts \
 adobe-source-han-serif-cn-fonts adobe-source-han-sans-tw-fonts \
@@ -107,7 +107,11 @@ echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
 passwd $USERN
 vi /etc/wsl.conf
 
+# Install GUI tools via yay
+echo -e "${color1}Change your root password & shell to zsh${NC}"
+sudo -u $USERN yay -S marktext-appimg
 # sysytemd
+echo -e "${color1}Change your root password & shell to zsh${NC}"
 sudo -u $USERN yay genie-systemd-git 
 echo 'genie -i' > /etc/init.wsl
 chmod +x /etc/init.wsl
