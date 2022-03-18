@@ -59,13 +59,22 @@ done
 echo -e "${color1}Update system${NC}"
 pacman -Syyu
 echo -e "${color1}Install Basic tools${NC}"
-pacman -S git yay wget curl rsync sshpass zsh manjaro-zsh-config ttf-nerd-fonts-symbols ttf-meslo-nerd-font-powerlevel10k nerd-fonts-noto-sans-mono vim wireguard-tools --noconfirm 
+pacman -S git yay wget curl rsync sshpass zsh manjaro-zsh-config \
+ttf-nerd-fonts-symbols ttf-meslo-nerd-font-powerlevel10k \
+nerd-fonts-noto-sans-mono vim wireguard-tools --noconfirm 
 echo -e "${color1}Install Xfce4 for GUI${NC}"
-pacman -S xfce4-gtk3 xfce4-goodies xfce4-terminal network-manager-applet xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings manjaro-xfce-gtk3-settings manjaro-settings-manager --noconfirm
+pacman -S xfce4-gtk3 xfce4-goodies xfce4-terminal network-manager-applet \
+xfce4-notifyd-gtk3 xfce4-whiskermenu-plugin-gtk3 tumbler engrampa lightdm \
+lightdm-gtk-greeter lightdm-gtk-greeter-settings manjaro-xfce-gtk3-settings \
+manjaro-settings-manager --noconfirm
 echo -e "${color1}Install GUI$ tools{NC}"
 pacman -S terminator brave tigervnc marktext gnome-pie --noconfirm
 echo -e "${color1}Install Chinese Environment{NC}"
-pacman -S adobe-source-han-serif-tw-fonts adobe-source-han-serif-hk-fonts adobe-source-han-serif-cn-fonts adobe-source-han-sans-tw-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-cn-fonts adobe-source-han-serif-jp-fonts adobe-source-han-sans-jp-fonts fcitx fcitx-chewing fcitx-configtool fcitx-mozc fcitx-configtool --noconfirm
+pacman -S adobe-source-han-serif-tw-fonts adobe-source-han-serif-hk-fonts \
+adobe-source-han-serif-cn-fonts adobe-source-han-sans-tw-fonts \
+adobe-source-han-sans-hk-fonts adobe-source-han-sans-cn-fonts \
+adobe-source-han-serif-jp-fonts adobe-source-han-sans-jp-fonts \
+fcitx fcitx-chewing fcitx-configtool fcitx-mozc fcitx-configtool --noconfirm
 echo "# Add Chinese Input Support
 export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
