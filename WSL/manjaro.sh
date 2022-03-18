@@ -108,6 +108,6 @@ passwd $USERN
 vi /etc/wsl.conf
 
 # sysytemd
-sudo -u $USERN yay -genie-systemd-git 
+sudo -u $USERN yay genie-systemd-git 
 echo 'genie -i' > /etc/init.wsl
 chmod +x /etc/init.wsl
