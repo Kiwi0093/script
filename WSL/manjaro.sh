@@ -117,6 +117,7 @@ sudo -u $USERN yay -S genie-systemd-git
 echo 'genie -i' > /etc/init.wsl
 chmod +x /etc/init.wsl
 genie -i
+genie -s
 systemctl disable auditd.service
 systemctl disable multipathd.service
 systemctl disable systemd-modules-load.service
