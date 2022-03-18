@@ -121,4 +121,5 @@ genie -c systemctl disable auditd.service
 genie -c systemctl disable multipathd.service
 genie -c systemctl disable systemd-modules-load.service
 genie -c systemctl enable systemd-resolved.service
+genie -c systemctl start systemd-resolved.service
 
