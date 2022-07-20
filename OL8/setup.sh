@@ -157,7 +157,7 @@ do
                                         echo "      - PUID=1000" >> /root/docker-compose/docker-compose.yml
                                         echo "    ports:" >> /root/docker-compose/docker-compose.yml
                                         echo "      - 9000:9000" >> /root/docker-compose/docker-compose.yml
-                                        echo "    volumes:" >> /root/docker-compose/pdocker-compose.yml
+                                        echo "    volumes:" >> /root/docker-compose/docker-compose.yml
                                         echo "      - /var/run/docker.sock:/var/run/docker.sock" >> /root/docker-compose/docker-compose.yml
                                         echo "      - /var/lib/docker/volumes/portainer/data:/data" >> /root/docker-compose/docker-compose.yml
                                         echo "    restart: always" >> /root/docker-compose/docker-compose.yml
@@ -167,7 +167,7 @@ do
                                         do
                                             read CONTAINER2
                                             case $CONTAINER2 in
-                                            YES)
+                                            Yes)
                                                 # Start from Trafik
                                                 echo -e "${color1}Create v2ray.yml into /root/docker-compose/${NC}"
                                                 echo -e "${color1}Please input the Domain for Trafik Dashboard${NC}"
@@ -195,14 +195,14 @@ do
                                                 echo "      - 443:443" >> /root/docker-compose/v2ray.yml
                                                 echo "      - 8080:8080" >> /root/docker-compose/v2ray.yml
                                                 echo "    volumes:" >> /root/docker-compose/v2ray.yml
-                                                echo "      - /var/lib/docker/volumes/traefik/letsencrypt:/letsencrypt" /root/docker-compose/v2ray.yml
-                                                echo "      - /var/run/docker.sock:/var/run/docker.sock:ro" /root/docker-compose/v2ray.yml
+                                                echo "      - /var/lib/docker/volumes/traefik/letsencrypt:/letsencrypt" >> /root/docker-compose/v2ray.yml
+                                                echo "      - /var/run/docker.sock:/var/run/docker.sock:ro" >> /root/docker-compose/v2ray.yml
                                                 echo "    labels:" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.enable: true # <== Enable traefik on itself to view dashboard and assign subdomain to view it" >> /root/docker-compose/v2ray.yml
-                                                echo "      traefik.http.routers.http_catchall.rule: hostregexp(`{host:.*}`)" >> /root/docker-compose/v2ray.yml
+                                                echo "      traefik.http.routers.http_catchall.rule: hostregexp(\`{host:.*}\`)" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.http_catchall.entryPoints: web" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.http_catchall.middlewares: redirect_https # <== apply redirect_https middleware which is defined in the below" >> /root/docker-compose/v2ray.yml
-                                                echo "      traefik.http.routers.traefik.rule: Host(`$DASHDN`) # <== Setting the domain for the dashboard" >> /root/docker-compose/v2ray.yml
+                                                echo "      traefik.http.routers.traefik.rule: Host(\`$DASHDN\`) # <== Setting the domain for the dashboard" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.traefik.entryPoints: web-secured" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.traefik.tls: true" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.traefik.tls.certresolver: myresolver" >> /root/docker-compose/v2ray.yml
@@ -231,7 +231,7 @@ do
                                                 echo "      - v2ray" >> /root/docker-compose/v2ray.yml
                                                 echo "    labels:" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.enable: true # <== Enable traefik on itself to view dashboard and assign subdomain to view it" >> /root/docker-compose/v2ray.yml
-                                                echo "      traefik.http.routers.v2ray.rule: Host(`V2RAYDN`) # <== Setting the domain for the dashboard" >> /root/docker-compose/v2ray.yml
+                                                echo "      traefik.http.routers.v2ray.rule: Host(\`V2RAYDN\`) # <== Setting the domain for the dashboard" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.v2ray.tls: true" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.v2ray.tls.certresolver: myresolver" >> /root/docker-compose/v2ray.yml
                                                 echo "" >> /root/docker-compose/v2ray.yml
@@ -240,7 +240,7 @@ do
                                                 echo "    container_name: V2ray_V2ray" >> /root/docker-compose/v2ray.yml
                                                 echo "    environment:" >> /root/docker-compose/v2ray.yml
                                                 echo "      - TZ=Asia/Taipei" >> /root/docker-compose/v2ray.yml
-                                                echo "    expose:"
+                                                echo "    expose:" >> /root/docker-compose/v2ray.yml
                                                 echo "      - 10000" >> /root/docker-compose/v2ray.yml
                                                 echo "    restart: always" >> /root/docker-compose/v2ray.yml
                                                 echo "    command: v2ray --config=/etc/v2ray/config.json" >> /root/docker-compose/v2ray.yml
