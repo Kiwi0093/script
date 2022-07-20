@@ -148,19 +148,45 @@ do
                                         echo "        - TZ=Asia/Taipei" >> /root/docker-compose/docker-compose.yml
                                         echo "      restart: unless-stopped" >> /root/docker-compose/docker-compose.yml
                                         echo '      command: --cleanup --schedule "0 0 4 * * *"' >> /root/docker-compose/docker-compose.yml
-                                        # Portainer
-                                        echo "" >> /root/docker-compose/docker-compose.yml
-                                        echo "  portainer:" >> /root/docker-compose/docker-compose.yml
-                                        echo "    image:  portainer/portainer-ce:latest" >> /root/docker-compose/docker-compose.yml
-                                        echo "    container_name: portainer" >> /root/docker-compose/docker-compose.yml
-                                        echo "    environment:" >> /root/docker-compose/docker-compose.yml
-                                        echo "      - PUID=1000" >> /root/docker-compose/docker-compose.yml
-                                        echo "    ports:" >> /root/docker-compose/docker-compose.yml
-                                        echo "      - 9000:9000" >> /root/docker-compose/docker-compose.yml
-                                        echo "    volumes:" >> /root/docker-compose/docker-compose.yml
-                                        echo "      - /var/run/docker.sock:/var/run/docker.sock" >> /root/docker-compose/docker-compose.yml
-                                        echo "      - /var/lib/docker/volumes/portainer/data:/data" >> /root/docker-compose/docker-compose.yml
-                                        echo "    restart: always" >> /root/docker-compose/docker-compose.yml
+                                        echo -e "${color1}Do you want to use Portainer Host?(Yes/No)${NC}"
+                                        while :
+                                        do
+                                           read CONTAINER1
+                                           case $CONTAINER1 in
+                                               Yes)# Portainer
+                                                   echo "" >> /root/docker-compose/docker-compose.yml
+                                                   echo "  portainer:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    image:  portainer/portainer-ce:latest" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    container_name: portainer" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    environment:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - PUID=1000" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    ports:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - 9000:9000" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    volumes:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - /var/run/docker.sock:/var/run/docker.sock" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - /var/lib/docker/volumes/portainer/data:/data" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    restart: always" >> /root/docker-compose/docker-compose.yml
+                                                   break
+                                                   ;;
+                                              No)
+                                                   echo -e "${color1}Processing to Protainer-agent${NC}"
+                                                   echo "portainer:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    image:  portainer/agent:latest" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    container_name: portainer_agent" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    ports:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - 9001:9001" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    volumes:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - /var/run/docker.sock:/var/run/docker.sock" >> /root/docker-compose/docker-compose.yml
+                                                   echo "      - /var/lib/docker/volumes:/var/lib/docker/volumes" >> /root/docker-compose/docker-compose.yml
+                                                   echo "    restart: always" >> /root/docker-compose/docker-compose.yml
+                                                   break
+                                                   ;;
+                                              *)
+                                                   echo -e "${color1}Do you want to use Portainer Host?(Yes/No)${NC}"
+                                                   continue
+                                                   ;;
+                                             esac
+                                        done
                                         docker-compose -f /root/docker-compose/docker-compose.yml up -d
                                         echo -e "${color1}Do you want to Establish V2ray+Nginx Service?(Yes/No)${NC}"
                                         while :
@@ -318,6 +344,7 @@ do
                                                 break
                                                 ;;
                                             *)
+                                                echo -e "${color1}Do you want to Establish V2ray+Nginx Service?(Yes/No)${NC}"
                                                 continue
                                                 ;;
                                             esac
@@ -328,6 +355,7 @@ do
                                         break
                                         ;;
                                     *)
+                                        echo -e "${color1}Do you want to add Portainer & watchtower containers into your system?(Yes/No)${NC}"
                                         continue
                                         ;;
                                 esac
