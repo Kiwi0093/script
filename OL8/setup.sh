@@ -170,7 +170,7 @@ do
                                                    ;;
                                               No)
                                                    echo -e "${color1}Processing to Protainer-agent${NC}"
-                                                   echo "portainer:" >> /root/docker-compose/docker-compose.yml
+                                                   echo "  portainer:" >> /root/docker-compose/docker-compose.yml
                                                    echo "    image:  portainer/agent:latest" >> /root/docker-compose/docker-compose.yml
                                                    echo "    container_name: portainer_agent" >> /root/docker-compose/docker-compose.yml
                                                    echo "    ports:" >> /root/docker-compose/docker-compose.yml
