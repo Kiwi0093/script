@@ -273,27 +273,8 @@ do
                                                 echo "    volumes:" >> /root/docker-compose/v2ray.yml
                                                 echo "      - /var/lib/docker/volumes/v2ray/v2ray:/etc/v2ray" >> /root/docker-compose/v2ray.yml
                                                 # Create nginx setting file
-                                                echo "server {" > /root/default
-                                                echo "    listen 80;" >> /root/default
-                                                echo "" >> /root/default
-                                                echo "    location / {" >> /root/default
-                                                echo "        root   /config/www;" >> /root/default
-                                                echo "        index  index.html index.htm;" >> /root/default
-                                                echo "    }" >> /root/default
-                                                echo "" >> /root/default
-                                                echo "    location /ray {" >> /root/default
-                                                echo "        proxy_redirect off;" >> /root/default
-                                                echo "       proxy_pass http://v2ray:10000;" >> /root/default
-                                                echo "        proxy_http_version 1.1;" >> /root/default
-                                                echo "        proxy_set_header Upgrade \$http_upgrade;" >> /root/default
-                                                echo "        proxy_set_header Connection \"upgrade\";" >> /root/default
-                                                echo "        proxy_set_header Host \$http_host;" >> /root/default
-                                                echo "    }" >> /root/default
-                                                echo "" >> /root/default
-                                                echo "    location ~ \.php$ {" >> /root/default
-                                                echo "        deny all;" >> /root/default
-                                                echo "    }" >> /root/default
-                                                echo "}" >> /root/default
+                                                echo -e "${color1}Download Nginx setting file${NC}"
+                                                curl -o /root/default -L -s https://kiwi0093.github.io/script/OL8/default
                                                 # Create v2ray setting file
                                                 echo -e "${color1}Please input UUID for V2ray${NC}"
                                                 read V2RAYID

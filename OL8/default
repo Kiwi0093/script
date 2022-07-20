@@ -1,0 +1,21 @@
+server {
+    listen 80;
+
+    location / {
+        root   /config/www;
+        index  index.html index.htm;
+    }
+
+    location /ray {
+        proxy_redirect off;
+        proxy_pass http://v2ray:10000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $http_host;
+    }
+
+    location ~ \.php$ {
+        deny all;
+    }
+}
