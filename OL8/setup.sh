@@ -309,7 +309,7 @@ do
                                                 echo '            "settings": {' >> /root/config.json
                                                 echo '                "clients": [' >> /root/config.json
                                                 echo '                   {' >> /root/config.json
-                                                echo '                        "id": "$V2RAYID",' >> /root/config.json
+                                                echo "                        \"id\": \"$V2RAYID\"," >> /root/config.json
                                                 echo '                        "level": 0,' >> /root/config.json
                                                 echo '                       "email": "kiwi@kaienroid.com"' >> /root/config.json
                                                 echo '                    }' >> /root/config.json
