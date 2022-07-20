@@ -127,7 +127,7 @@ do
                                 ;;
                         No)
                             echo -e "${color1}Do you want to add Portainer & watchtower containers into your system?(Yes/No)${NC}"
-                            while:
+                            while :
                             do
                                 read CONTAINER1
                                 case $CONTAINER1 in
@@ -163,7 +163,7 @@ do
                                         echo "    restart: always" >> /root/docker-compose/docker-compose.yml
                                         docker-compose -f /root/docker-compose/docker-compose.yml up -d
                                         echo -e "${color1}Do you want to Establish V2ray+Nginx Service?(Yes/No)${NC}"
-                                        while:
+                                        while :
                                         do
                                             read CONTAINER2
                                             case $CONTAINER2 in
