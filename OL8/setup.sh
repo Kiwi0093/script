@@ -257,7 +257,7 @@ do
                                                 echo "      - v2ray" >> /root/docker-compose/v2ray.yml
                                                 echo "    labels:" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.enable: true # <== Enable traefik on itself to view dashboard and assign subdomain to view it" >> /root/docker-compose/v2ray.yml
-                                                echo "      traefik.http.routers.v2ray.rule: Host(\`V2RAYDN\`) # <== Setting the domain for the dashboard" >> /root/docker-compose/v2ray.yml
+                                                echo "      traefik.http.routers.v2ray.rule: Host(\`$V2RAYDN\`) # <== Setting the domain for the dashboard" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.v2ray.tls: true" >> /root/docker-compose/v2ray.yml
                                                 echo "      traefik.http.routers.v2ray.tls.certresolver: myresolver" >> /root/docker-compose/v2ray.yml
                                                 echo "" >> /root/docker-compose/v2ray.yml
