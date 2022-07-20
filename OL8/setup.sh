@@ -285,9 +285,9 @@ do
                                                 echo "        proxy_redirect off;" >> /root/default
                                                 echo "       proxy_pass http://v2ray:10000;" >> /root/default
                                                 echo "        proxy_http_version 1.1;" >> /root/default
-                                                echo "        proxy_set_header Upgrade $http_upgrade;" >> /root/default
-                                                echo "        proxy_set_header Connection "upgrade";" >> /root/default
-                                                echo "        proxy_set_header Host $http_host;" >> /root/default
+                                                echo "        proxy_set_header Upgrade \$http_upgrade;" >> /root/default
+                                                echo "        proxy_set_header Connection \"upgrade\";" >> /root/default
+                                                echo "        proxy_set_header Host \$http_host;" >> /root/default
                                                 echo "    }" >> /root/default
                                                 echo "" >> /root/default
                                                 echo "    location ~ \.php$ {" >> /root/default
