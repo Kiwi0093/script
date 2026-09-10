@@ -45,21 +45,31 @@ tags:
 
 **實體網路卡 (Uplinks / vmnic)**
 
-| 網卡代號 | 驅動程式 | 連結狀態 | 速度與雙工 (Speed/Duplex) | MAC 位址 | MTU |
-| :--- | :--- | :--- | :--- | :--- | :--- |
+| 網路卡型號 (Description) | 網卡代號 | 驅動程式 | 連結狀態 | 速度與雙工 (Speed/Duplex) | MAC 位址 | MTU |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 網卡段落：直接調用標準輸出提取 vmnic 代號與對應資訊
-esxcli network nic list | awk 'NR>2 {
-  nic = $1
-  driver = $3
-  link = $4
-  # 從倒數欄位穩定提取 MAC 與 MTU
-  mtu = $NF
-  mac = $(NF-1)
-  duplex = $(NF-2)
-  speed = $(NF-3)
-  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac, mtu
+# $3: Description (網卡型號)
+# $10: Name (vmnicX)
+# $4: Driver
+# $6: Link
+# $12: Speed
+# $5: Duplex
+# $8: MACAddress
+# $9: MTU
+esxcli --formatter=csv network nic list | awk -F',' 'NR>1 {
+  for (i=1; i<=NF; i++) gsub(/^"|"$/, "", $i)
+  desc = $3
+  nic = $10
+  driver = $4
+  link = $6
+  speed = $12
+  duplex = $5
+  mac = $8
+  mtu = $9
+  if (nic != "") {
+    printf "| %s | `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", desc, nic, driver, link, speed, duplex, mac, mtu
+  }
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
