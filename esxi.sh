@@ -101,17 +101,19 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 迭代所有 VM，抓取其資源配置與 Port Group
+# 迭代所有 VM，使用 awk 清理空白與逗號，不調用 tr
 for vmid in $(vim-cmd vmsvc/getallvms 2>/dev/null | awk 'NR>1 {print $1}'); do
   VM_INFO=$(vim-cmd vmsvc/get.summary $vmid 2>/dev/null)
   VM_NAME=$(echo "$VM_INFO" | awk -F'= "' '/name =/{print $2}' | cut -d'"' -f1)
   POWER_STATE=$(echo "$VM_INFO" | awk -F'= "' '/powerState =/{print $2}' | cut -d'"' -f1)
-  VCPU=$(echo "$VM_INFO" | awk -F'= ' '/numCpu =/{print $2}' | tr -d ',\n ')
-  MEM_MB=$(echo "$VM_INFO" | awk -F'= ' '/memorySizeMB =/{print $2}' | tr -d ',\n ')
+  
+  # 純 awk 替換，完全去除 tr 依賴
+  VCPU=$(echo "$VM_INFO" | awk -F'= ' '/numCpu =/{gsub(/[, \r\n]/, "", $2); print $2}')
+  MEM_MB=$(echo "$VM_INFO" | awk -F'= ' '/memorySizeMB =/{gsub(/[, \r\n]/, "", $2); print $2}')
   MEM_FMT="$(expr $MEM_MB / 1024 2>/dev/null || echo $MEM_MB)GB"
   
   # 抓取該 VM 綁定的 Portgroup
-  NETWORKS=$(vim-cmd vmsvc/get.guest $vmid 2>/dev/null | awk -F'= "' '/network =/{print $2}' | cut -d'"' -f1 | sort -u | paste -sd ', ' -)
+  NETWORKS=$(vim-cmd vmsvc/get.guest $vmid 2>/dev/null | awk -F'= "' '/network =/{print $2}' | cut -d'"' -f1 | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
   [ -z "$NETWORKS" ] && NETWORKS="未配置/關機中"
 
   echo "| \`${vmid}\` | **${VM_NAME}** | ${POWER_STATE} | \`${VCPU} vCPU / ${MEM_FMT}\` | \`${NETWORKS}\` |" >> "$OUTPUT_FILE"
