@@ -45,18 +45,28 @@ tags:
 
 **實體網路卡 (Uplinks / vmnic)**
 
-| 網卡代號 | 驅動程式 | 連結狀態 | 速度 (Speed) | 雙工模式 (Duplex) | MAC 位址 |
+| 網卡代號 | 驅動程式 | 連結狀態 | 速度與雙工 (Speed/Duplex) | MAC 位址 | MTU |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
+# 使用格式比對精準定位 MAC 位址與 MTU，欄位絕不位移或漏印
 esxcli network nic list | awk 'NR>2 {
   nic = $1
   driver = $3
   link = $4
-  speed = $5
-  duplex = $6
-  mac = $7
-  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac
+  mac = "Unknown"
+  mtu = $NF
+  
+  # 動態鎖定帶有冒號的標準 MAC 欄位
+  for (i=5; i<=NF; i++) {
+    if ($i ~ /^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$/) {
+      mac = $i
+      speed = $(i-2)
+      duplex = $(i-1)
+      break
+    }
+  }
+  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac, mtu
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
