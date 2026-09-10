@@ -49,7 +49,6 @@ tags:
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 原程式碼邏輯不變，僅配合輸出的值將表頭換成 Speed、Duplex、MAC
 esxcli network nic list | awk 'NR>2 {
   nic = $1
   driver = $3
@@ -68,7 +67,6 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- |
 EOF
 
-# 原程式碼邏輯不變，僅配合倒數第二欄與最後一欄的實際值調換表頭名稱
 esxcli network vswitch standard portgroup list | awk 'NR>2 {
   clients = $NF
   vlan = $(NF-1)
