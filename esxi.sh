@@ -58,17 +58,16 @@ cat << EOF >> "$OUTPUT_FILE"
 
 **虛擬交換機與 Port Group (vSwitch / VLAN 映射)**
 
-| Port Group 名稱 | 所屬 vSwitch | VLAN ID | 活躍 Uplink (vmnic) |
+| Port Group 名稱 | 所屬 vSwitch | VLAN ID | 活躍 Uplink 數量 (Active Clients/Uplinks) |
 | :--- | :--- | :--- | :--- |
 EOF
 
-# 明確解析 Port Group：最後一欄為 VLAN ID，倒數第二欄為 Active Clients/Uplinks
+# 校正欄位：倒數第二欄為 VLAN ID，最後一欄為 Uplink/Client 數量
 esxcli network vswitch standard portgroup list | awk 'NR>2 {
-  vlan = $NF
-  uplinks = $(NF-1)
+  uplinks = $NF
+  vlan = $(NF-1)
   vswitch = $(NF-2)
   
-  # 將前面的所有欄位組裝為 Port Group 完整名稱
   pg = $1
   for (i=2; i<=NF-3; i++) {
     pg = pg " " $i
@@ -84,13 +83,11 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 改用純 shell 遍歷 ipv4 get，穩定提取各介面 IP 與對應 MAC/MTU
 for vmk in $(esxcli network ip interface ipv4 get 2>/dev/null | awk 'NR>2 {print $1}'); do
   IP_INFO=$(esxcli network ip interface ipv4 get 2>/dev/null | awk -v v="$vmk" '$1==v {print $2, $3}')
   IP=$(echo "$IP_INFO" | awk '{print $1}')
   MASK=$(echo "$IP_INFO" | awk '{print $2}')
   
-  # 直接抓取 MAC 與 MTU
   MAC=$(esxcli network ip interface list 2>/dev/null | awk -v v="$vmk" '$1==v, /Enabled:/' | awk -F': ' '/MAC Address:/{print $2; exit}')
   MTU=$(esxcli network ip interface list 2>/dev/null | awk -v v="$vmk" '$1==v, /Enabled:/' | awk -F': ' '/MTU:/{print $2; exit}')
   
@@ -134,7 +131,6 @@ for vmid in $(vim-cmd vmsvc/getallvms 2>/dev/null | awk 'NR>1 {print $1}'); do
   VMX_PATH=$(echo "$VM_INFO" | awk -F'= "' '/vmPathName =/{print $2}' | cut -d'"' -f1)
   NETWORKS=""
   
-  # 精確過濾：只抓取真正的 Port Group 名稱 (VM_*, Management Network*)
   if [ -n "$VMX_PATH" ] && [ -f "$VMX_PATH" ]; then
     NETWORKS=$(grep -i 'networkName' "$VMX_PATH" 2>/dev/null | awk -F'"' '{print $2}' | grep -v '^[ \t]*$' | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
   fi
