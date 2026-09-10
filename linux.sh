@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-HOSTNAME=$(hostname)
+HOSTNAME=$(cat /proc/sys/kernel/hostname)
 OUTPUT_FILE="Node_${HOSTNAME}.md"
 GEN_DATE=$(date "+%Y-%m-%d %H:%M:%S")
 
