@@ -46,7 +46,6 @@ tags:
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 抓取物理網卡 (有 /sys/class/net/<iface>/device) 與 WireGuard (wg*) 介面
 for iface in $(ls /sys/class/net); do
   if [ "$iface" = "lo" ]; then continue; fi
   
@@ -63,24 +62,22 @@ for iface in $(ls /sys/class/net); do
   MTU=$(cat /sys/class/net/$iface/mtu 2>/dev/null || echo "N/A")
   OPERSTATE=$(cat /sys/class/net/$iface/operstate 2>/dev/null || echo "unknown")
   
-  # 提取該網卡上綁定的所有真實 IP (一行多個 IP 換行呈現)
   IPS=$(ip -o addr show dev "$iface" 2>/dev/null | awk '{print "`" $4 "`"}' | paste -sd '<br>' -)
   [ -z "$IPS" ] && IPS="*未配發 IP*"
 
   echo "| \`${iface}\` | ${IF_TYPE} | ${IPS} | \`${MAC}\` | \`${MTU}\` | \`${OPERSTATE}\` |" >> "$OUTPUT_FILE"
 done
 
-# 若有啟動 WireGuard，額外抓取 Peer 與 Mesh 連線資訊
 if command -v wg >/dev/null 2>&1 && wg show >/dev/null 2>&1; then
   cat << EOF >> "$OUTPUT_FILE"
 
 **WireGuard Mesh 運作狀態 (wg show)**
 
-| 介面名稱 | 監聽埠號 (Port) | 公鑰 (Public Key) | 允許連線 IP (Allowed IPs) | 端點 (Endpoint) |
-| :--- | :--- | :--- | :--- | :--- |
+| 介面名稱 | 允許連線 IP (Allowed IPs) | 端點 (Endpoint) |
+| :--- | :--- | :--- |
 EOF
   wg show all dump | tail -n +2 | while read -r dev peer _ endpoint allowed_ips _ _ _; do
-    echo "| \`${dev}\` | - | \`${peer:0:12}...\` | \`${allowed_ips}\` | \`${endpoint}\` |" >> "$OUTPUT_FILE"
+    echo "| \`${dev}\` | \`${allowed_ips}\` | \`${endpoint}\` |" >> "$OUTPUT_FILE"
   done
 fi
 
@@ -98,15 +95,16 @@ df -h -T -P | awk 'NR>1 && $2 !~ /^(tmpfs|devtmpfs|overlay|squashfs)/ {
 
 cat << EOF >> "$OUTPUT_FILE"
 
-**關鍵常駐服務 (Systemd Enabled)**
+**已啟用系統服務 (All Enabled Systemd Services)**
 
 EOF
 
-SERVICES=$(systemctl list-unit-files --state=enabled --type=service 2>/dev/null | grep -E "wireguard|gluetun|sshguard|crowdsec|restic|docker|traefik|v2ray|3x-ui" | awk '{print "* `" $1 "`"}' || true)
+# 全量輸出所有 enabled 的 systemd 服務，不進行任何關鍵字挑選
+SERVICES=$(systemctl list-unit-files --state=enabled --type=service 2>/dev/null | awk 'NR>1 && $1 ~ /\.service$/ {print "* `" $1 "`"}' || true)
 if [ -n "$SERVICES" ]; then
   echo "$SERVICES" >> "$OUTPUT_FILE"
 else
-  echo "* 無關鍵服務" >> "$OUTPUT_FILE"
+  echo "* 無啟用中的服務" >> "$OUTPUT_FILE"
 fi
 
 cat << EOF >> "$OUTPUT_FILE"
