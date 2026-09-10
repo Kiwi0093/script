@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 HOSTNAME=$(hostname)
 OUTPUT_FILE="Node_${HOSTNAME}.md"
@@ -8,12 +7,10 @@ GEN_DATE=$(date "+%Y-%m-%d %H:%M:%S")
 # 1. 系統與 CPU 資訊
 ESXI_VER=$(vmware -v)
 
-# 從 /proc/cpuinfo 抓取完整處理器型號
 CPU_MODEL=$(grep -m1 'model name' /proc/cpuinfo 2>/dev/null | awk -F': ' '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
 [ -z "$CPU_MODEL" ] && CPU_MODEL=$(vim-cmd hostsvc/hosthardware 2>/dev/null | awk -F'"' '/cpuModel = "/{print $2}')
 [ -z "$CPU_MODEL" ] && CPU_MODEL="Intel(R) Xeon(R) E-2314 CPU @ 2.80GHz"
 
-# 純 awk 處理空白與換行
 PKGS=$(esxcli hardware cpu global get 2>/dev/null | awk -F': ' '/CPU Packages:/{gsub(/[ \r\n\t]/, "", $2); print $2}')
 CORES=$(grep -m1 'cpu cores' /proc/cpuinfo 2>/dev/null | awk -F': ' '{gsub(/[ \r\n\t]/, "", $2); print $2}')
 THREADS=$(esxcli hardware cpu global get 2>/dev/null | awk -F': ' '/Logical Processors:/{gsub(/[ \r\n\t]/, "", $2); print $2}')
@@ -65,26 +62,18 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- |
 EOF
 
-# 明確解析 Port Group：將各行按欄位倒數推算
+# 明確解析 Port Group：最後一欄為 VLAN ID，倒數第二欄為 Active Clients/Uplinks
 esxcli network vswitch standard portgroup list | awk 'NR>2 {
-  uplink = $NF
-  vlan = $(NF-1)
+  vlan = $NF
+  uplinks = $(NF-1)
   vswitch = $(NF-2)
-  # 若 uplink 欄位為空或為數字，進行欄位防呆平移
-  if (vlan ~ /^vSwitch/) {
-    uplink = ""
-    vlan = $NF
-    vswitch = $(NF-1)
-    pg_end = NF-2
-  } else {
-    pg_end = NF-3
-  }
   
+  # 將前面的所有欄位組裝為 Port Group 完整名稱
   pg = $1
-  for(i=2; i<=pg_end; i++) {
+  for (i=2; i<=NF-3; i++) {
     pg = pg " " $i
   }
-  printf "| **%s** | `%s` | `%s` | `%s` |\n", pg, vswitch, vlan, uplink
+  printf "| **%s** | `%s` | `%s` | `%s` |\n", pg, vswitch, vlan, uplinks
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
@@ -95,18 +84,18 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 直接從 esxcli network ip interface ipv4 get 與 interface list 雙重比對
-esxcli network ip interface ipv4 get | awk 'NR>2 {
-  iface=$1; ip=$2; mask=$3
-  cmd="esxcli network ip interface get -i " iface
-  mac="Unknown"; mtu="Unknown"
-  while ((cmd | getline line) > 0) {
-    if (line ~ /MAC Address:/) { sub(/.*MAC Address:[ \t]*/, "", line); mac=line }
-    if (line ~ /MTU:/) { sub(/.*MTU:[ \t]*/, "", line); mtu=line }
-  }
-  close(cmd)
-  printf "| `%s` | `%s` | `%s` | `%s` | `%s` |\n", iface, ip, mask, mac, mtu
-}' >> "$OUTPUT_FILE"
+# 改用純 shell 遍歷 ipv4 get，穩定提取各介面 IP 與對應 MAC/MTU
+for vmk in $(esxcli network ip interface ipv4 get 2>/dev/null | awk 'NR>2 {print $1}'); do
+  IP_INFO=$(esxcli network ip interface ipv4 get 2>/dev/null | awk -v v="$vmk" '$1==v {print $2, $3}')
+  IP=$(echo "$IP_INFO" | awk '{print $1}')
+  MASK=$(echo "$IP_INFO" | awk '{print $2}')
+  
+  # 直接抓取 MAC 與 MTU
+  MAC=$(esxcli network ip interface list 2>/dev/null | awk -v v="$vmk" '$1==v, /Enabled:/' | awk -F': ' '/MAC Address:/{print $2; exit}')
+  MTU=$(esxcli network ip interface list 2>/dev/null | awk -v v="$vmk" '$1==v, /Enabled:/' | awk -F': ' '/MTU:/{print $2; exit}')
+  
+  echo "| \`${vmk}\` | \`${IP:-None}\` | \`${MASK:-None}\` | \`${MAC:-Unknown}\` | \`${MTU:-1500}\` |" >> "$OUTPUT_FILE"
+done
 
 cat << EOF >> "$OUTPUT_FILE"
 
@@ -116,7 +105,6 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 過濾掉系統分區 (BOOTBANK)，只保留 VMFS 資料池
 df -h | awk '$NF ~ /^\/vmfs\/volumes\// {
   mount=$NF
   name=$NF
@@ -143,14 +131,24 @@ for vmid in $(vim-cmd vmsvc/getallvms 2>/dev/null | awk 'NR>1 {print $1}'); do
   MEM_MB=$(echo "$VM_INFO" | awk -F'= ' '/memorySizeMB =/{gsub(/[, \r\n]/, "", $2); print $2}')
   MEM_FMT="$(expr $MEM_MB / 1024 2>/dev/null || echo $MEM_MB)GB"
   
-  # 最穩定的方式：取得 VMX 路徑，直接解析裡面的 ethernet*.networkName
-  VMX_PATH=$(vim-cmd vmsvc/get.summary $vmid 2>/dev/null | awk -F'= "' '/vmPathName =/{print $2}' | cut -d'"' -f1)
+  VMX_PATH=$(echo "$VM_INFO" | awk -F'= "' '/vmPathName =/{print $2}' | cut -d'"' -f1)
+  NETWORKS=""
+  
+  # 精確過濾：只抓取真正的 Port Group 名稱 (VM_*, Management Network*)
   if [ -n "$VMX_PATH" ] && [ -f "$VMX_PATH" ]; then
-    NETWORKS=$(grep -i 'networkName' "$VMX_PATH" | awk -F'"' '{print $2}' | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
-  else
-    NETWORKS=$(vim-cmd vmsvc/get.guest $vmid 2>/dev/null | awk -F'= "' '/network =/{print $2}' | cut -d'"' -f1 | grep -v '^[0-9]' | grep -v ':' | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
+    NETWORKS=$(grep -i 'networkName' "$VMX_PATH" 2>/dev/null | awk -F'"' '{print $2}' | grep -v '^[ \t]*$' | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
   fi
-  [ -z "$NETWORKS" ] && NETWORKS="未配置網路"
+  
+  if [ -z "$NETWORKS" ]; then
+    NETWORKS=$(vim-cmd vmsvc/device.getdevices $vmid 2>/dev/null | grep -E "VM_|Management Network" | awk -F'"' '{print $2}' | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
+  fi
+  
+  if [ -z "$NETWORKS" ]; then
+    NETWORKS=$(vim-cmd vmsvc/get.guest $vmid 2>/dev/null | awk -F'= "' '/network =/{print $2}' | cut -d'"' -f1 | grep -E "VM_|Management Network" | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
+  fi
+  
+  NETWORKS=$(echo "$NETWORKS" | awk '{sub(/^[ ,]+/, ""); print}')
+  [ -z "$NETWORKS" ] && NETWORKS="未配置網路/直通"
 
   echo "| \`${vmid}\` | **${VM_NAME}** | ${POWER_STATE} | \`${VCPU} vCPU / ${MEM_FMT}\` | \`${NETWORKS}\` |" >> "$OUTPUT_FILE"
 done
