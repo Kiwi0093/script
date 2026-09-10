@@ -40,7 +40,7 @@ tags:
 | **記憶體 (已用 / 總量)** | \`${RAM_USED} / ${RAM_TOTAL}\` (Swap: \`${SWAP_TOTAL}\`) |
 | **預設閘道 (Default Gateway)** | \`${DEFAULT_GW:-無}\` |
 
-**核心網路介面 (實體 / VM 網卡 / WireGuard)**
+**核心網路介面 (實體 / VM 網卡 / WireGuard / Macvlan)**
 
 | 介面名稱 | 類型 | 實際 IP (IPv4 / IPv6) | MAC 位址 | MTU | 狀態 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -54,6 +54,8 @@ for iface in $(ls /sys/class/net); do
     IF_TYPE="實體 / VM 網卡"
   elif [[ "$iface" =~ ^wg ]]; then
     IF_TYPE="WireGuard 介面"
+  elif [[ "$iface" =~ ^macvlan ]] || [ -f "/sys/class/net/$iface/macvlan" ]; then
+    IF_TYPE="Host Macvlan 介面"
   else
     continue
   fi
@@ -99,7 +101,6 @@ cat << EOF >> "$OUTPUT_FILE"
 
 EOF
 
-# 全量輸出所有 enabled 的 systemd 服務，不進行任何關鍵字挑選
 SERVICES=$(systemctl list-unit-files --state=enabled --type=service 2>/dev/null | awk 'NR>1 && $1 ~ /\.service$/ {print "* `" $1 "`"}' || true)
 if [ -n "$SERVICES" ]; then
   echo "$SERVICES" >> "$OUTPUT_FILE"
@@ -107,22 +108,58 @@ else
   echo "* 無啟用中的服務" >> "$OUTPUT_FILE"
 fi
 
-cat << EOF >> "$OUTPUT_FILE"
-
-**Docker 容器拓撲**
-
-EOF
-
+# ----------------------------------------------------
+# Docker 拓撲與網路分析區段 (含 Macvlan & 實際 IP 清單)
+# ----------------------------------------------------
 if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
   cat << EOF >> "$OUTPUT_FILE"
-| 容器名稱 | 映像檔 | 運行狀態 | 網路模式 | 埠號對應 (Port Mappings) |
+
+**Docker 網路定義清單 (含 Driver 與 Subnet)**
+
+| 網路名稱 (Network) | 驅動 (Driver) | 網段 (Subnet) | 閘道 (Gateway) | 父介面 (Parent Iface) |
 | :--- | :--- | :--- | :--- | :--- |
 EOF
-  docker ps --format '{{.Names}}|{{.Image}}|{{.Status}}|{{.Networks}}|{{if .Ports}}{{.Ports}}{{else}}純內部Bridge / 無Mapping{{end}}' | while IFS='|' read -r name img status net ports; do
-    echo "| **${name}** | \`${img}\` | ${status} | \`${net}\` | \`${ports}\` |" >> "$OUTPUT_FILE"
+
+  # 遍歷所有 Docker 網路並解析 IP 配置
+  for net_id in $(docker network ls -q); do
+    docker network inspect "$net_id" --format '{{.Name}}|{{.Driver}}|{{range .IPAM.Config}}{{.Subnet}}{{end}}|{{range .IPAM.Config}}{{.Gateway}}{{end}}|{{index .Options "parent"}}' | while IFS='|' read -r n_name n_driver n_subnet n_gw n_parent; do
+      [ -z "$n_subnet" ] && n_subnet="None"
+      [ -z "$n_gw" ] && n_gw="None"
+      [ -z "$n_parent" ] && n_parent="N/A"
+      echo "| **${n_name}** | \`${n_driver}\` | \`${n_subnet}\` | \`${n_gw}\` | \`${n_parent}\` |" >> "$OUTPUT_FILE"
+    done
+  done
+
+  cat << EOF >> "$OUTPUT_FILE"
+
+**Docker 容器實體與網路拓撲 (含各網路實際 IP 與 Macvlan)**
+
+| 容器名稱 | 映像檔 | 運行狀態 | 埠號對應 (Port Mappings) | 網路與實際 IP (含 MAC 位址) |
+| :--- | :--- | :--- | :--- | :--- |
+EOF
+
+  # 抽取每個容器的所屬網路、IPAddress、MacAddress
+  for c_id in $(docker ps -q); do
+    C_NAME=$(docker inspect --format '{{.Name}}' "$c_id" | sed 's/^\///')
+    C_IMG=$(docker inspect --format '{{.Config.Image}}' "$c_id")
+    C_STATUS=$(docker inspect --format '{{.State.Status}}' "$c_id")
+    
+    # 解析 Port 映射
+    C_PORTS=$(docker ps --filter "id=$c_id" --format '{{.Ports}}')
+    [ -z "$C_PORTS" ] && C_PORTS="純內部 / 無對外映射"
+
+    # 解析所有網路綁定 (一個容器若連多個網路，例如 default + macvlan，會換行顯示)
+    C_NETS=$(docker inspect --format '{{range $net, $conf := .NetworkSettings.Networks}}[`{{$net}}`] {{if $conf.IPAddress}}{{$conf.IPAddress}}{{else}}Host/None{{end}} (MAC: {{$conf.MacAddress}})<br>{{end}}' "$c_id" | sed 's/<br>$//')
+
+    echo "| **${C_NAME}** | \`${C_IMG}\` | ${C_STATUS} | \`${C_PORTS}\` | ${C_NETS} |" >> "$OUTPUT_FILE"
   done
 else
-  echo "* 本節點未安裝 Docker 或無運行容器。" >> "$OUTPUT_FILE"
+  cat << EOF >> "$OUTPUT_FILE"
+
+**Docker 服務狀態**
+
+* 本節點未安裝 Docker 或未運行 Docker Daemon。
+EOF
 fi
 
 echo -e "\n---\n*Raw Data Generated.*" >> "$OUTPUT_FILE"
