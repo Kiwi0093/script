@@ -49,22 +49,28 @@ tags:
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
+# 精確對齊網卡清單欄位 (解決 Duplex 造成 MAC/MTU 位移)
 esxcli network nic list | awk 'NR>2 {
-  speed_duplex = $5 " " $6
-  printf "| `%s` | `%s` | %s | %s | `%s` | `%s` |\n", $1, $3, $4, speed_duplex, $8, $7
+  nic = $1
+  driver = $3
+  link = $4
+  speed = $5
+  duplex = $6
+  mac = $7
+  mtu = $8
+  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac, mtu
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
 
 **虛擬交換機與 Port Group (vSwitch / VLAN 映射)**
 
-| Port Group 名稱 | 所屬 vSwitch | VLAN ID | 活躍 Uplink 數量 (Active Clients/Uplinks) |
+| Port Group 名稱 | 所屬 vSwitch | VLAN ID | 連線客戶端數 (Active Clients) |
 | :--- | :--- | :--- | :--- |
 EOF
 
-# 校正欄位：倒數第二欄為 VLAN ID，最後一欄為 Uplink/Client 數量
 esxcli network vswitch standard portgroup list | awk 'NR>2 {
-  uplinks = $NF
+  clients = $NF
   vlan = $(NF-1)
   vswitch = $(NF-2)
   
@@ -72,7 +78,7 @@ esxcli network vswitch standard portgroup list | awk 'NR>2 {
   for (i=2; i<=NF-3; i++) {
     pg = pg " " $i
   }
-  printf "| **%s** | `%s` | `%s` | `%s` |\n", pg, vswitch, vlan, uplinks
+  printf "| **%s** | `%s` | `%s` | `%s` |\n", pg, vswitch, vlan, clients
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
