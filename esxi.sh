@@ -49,23 +49,16 @@ tags:
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 使用格式比對精準定位 MAC 位址與 MTU，欄位絕不位移或漏印
-esxcli network nic list | awk 'NR>2 {
-  nic = $1
+# 使用 CSV 格式精準提取各欄位，徹底解決空格切分錯誤
+esxcli --formatter=csv network nic list | awk -F',' 'NR>1 {
+  for (i=1; i<=NF; i++) gsub(/^"|"$/, "", $i)
+  nic = $NF
   driver = $3
-  link = $4
-  mac = "Unknown"
-  mtu = $NF
-  
-  # 動態鎖定帶有冒號的標準 MAC 欄位
-  for (i=5; i<=NF; i++) {
-    if ($i ~ /^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$/) {
-      mac = $i
-      speed = $(i-2)
-      duplex = $(i-1)
-      break
-    }
-  }
+  link = $1
+  duplex = $4
+  speed = $6
+  mac = $7
+  mtu = $8
   printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac, mtu
 }' >> "$OUTPUT_FILE"
 
