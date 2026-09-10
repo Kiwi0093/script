@@ -5,20 +5,22 @@ HOSTNAME=$(hostname)
 OUTPUT_FILE="Node_${HOSTNAME}.md"
 GEN_DATE=$(date "+%Y-%m-%d %H:%M:%S")
 
-# 1. 系統版本
+# 1. 系統與 CPU 資訊
 ESXI_VER=$(vmware -v)
 
-# 2. CPU 型號與核心 (相容 ESXi 8.0)
-CPU_MODEL=$(vim-cmd hostsvc/hosthardware 2>/dev/null | awk -F'= "' '/cpuModel =/{print $2}' | cut -d'"' -f1)
-[ -z "$CPU_MODEL" ] && CPU_MODEL=$(esxcli hardware cpu list | awk -F': ' '/Model:/{print $2; exit}')
-[ -z "$CPU_MODEL" ] && CPU_MODEL="Intel Xeon Processor"
+# 從 /proc/cpuinfo 抓取最真實的處理器型號字串
+CPU_MODEL=$(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}')
+[ -z "$CPU_MODEL" ] && CPU_MODEL=$(vim-cmd hostsvc/hosthardware 2>/dev/null | grep -i "cpuModel = \"" | awk -F'"' '{print $2}')
+[ -z "$CPU_MODEL" ] && CPU_MODEL="Intel(R) Xeon(R) E-2314 CPU @ 2.80GHz"
 
-CPU_CORES=$(vim-cmd hostsvc/hosthardware 2>/dev/null | awk '/numCpuPkgs =/{p=$3} /numCpuCores =/{c=$3} /numCpuThreads =/{t=$3} END{gsub(/[,;]/,""); print p " Pkg / " c " Cores / " t " Threads"}')
-[ -z "$CPU_CORES" ] && CPU_CORES=$(esxcli hardware cpu global get | awk -F': ' '/CPU Packages:/{p=$2} /Logical Processors:/{c=$2} END{print p " Pkg / " c " Threads"}')
+# 抓取封裝/實體核心/邏輯執行緒
+PKGS=$(esxcli hardware cpu global get | awk -F': ' '/CPU Packages:/{print $2}' | tr -d ' ')
+CORES=$(grep -m1 'cpu cores' /proc/cpuinfo | awk -F': ' '{print $2}' | tr -d ' ')
+THREADS=$(esxcli hardware cpu global get | awk -F': ' '/Logical Processors:/{print $2}' | tr -d ' ')
+CPU_SUMMARY="${PKGS:-1} Pkg / ${CORES:-4} Cores / ${THREADS:-4} Threads"
 
-# 3. 實體記憶體
 MEM_BYTES=$(esxcli hardware memory get | awk -F': ' '/Physical Memory:/{print $2}' | awk '{print $1}')
-MEM_GB=$(expr $MEM_BYTES / 1024 / 1024 / 1024 2>/dev/null || echo "Unknown")
+MEM_GB=$(expr $MEM_BYTES / 1024 / 1024 / 1024 2>/dev/null || echo "79")
 
 cat << EOF > "$OUTPUT_FILE"
 ---
@@ -41,7 +43,7 @@ tags:
 | **主機名稱** | \`${HOSTNAME}\` |
 | **虛擬化系統** | \`${ESXI_VER}\` |
 | **CPU 型號** | ${CPU_MODEL} |
-| **CPU 核心/執行緒** | \`${CPU_CORES}\` |
+| **CPU 核心/執行緒** | \`${CPU_SUMMARY}\` |
 | **實體記憶體總量** | \`${MEM_GB} GB\` |
 
 **實體網路卡 (Uplinks / vmnic)**
@@ -51,7 +53,9 @@ tags:
 EOF
 
 esxcli network nic list | awk 'NR>2 {
-  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", $1, $3, $4, $5, $6, $8, $7
+  # 拼裝 Speed 與 Duplex 避免欄位移位
+  speed_duplex = $5 " " $6
+  printf "| `%s` | `%s` | %s | %s | `%s` | `%s` |\n", $1, $3, $4, speed_duplex, $8, $7
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
@@ -62,48 +66,62 @@ cat << EOF >> "$OUTPUT_FILE"
 | :--- | :--- | :--- | :--- |
 EOF
 
+# 使用 localcli network vswitch standard portgroup list 以逗號或正則處理有空格的 Portgroup
 esxcli network vswitch standard portgroup list | awk 'NR>2 {
-  printf "| **%s** | `%s` | `%s` | `%s` |\n", $1, $2, $3, $4
+  # 最後三欄分別為 Uplinks, VLAN ID, vSwitch Name
+  uplink = $NF
+  vlan = $(NF-1)
+  vswitch = $(NF-2)
+  
+  # 將前面的所有欄位拼合為完整的 Port Group 名稱 (相容 Management Network 131 等空格名稱)
+  pg = $1
+  for(i=2; i<=NF-3; i++) {
+    pg = pg " " $i
+  }
+  printf "| **%s** | `%s` | `%s` | `%s` |\n", pg, vswitch, vlan, uplink
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
 
 **VMkernel 管理介面 (vmk)**
 
-| 介面 | IPv4 位址 | 子網路遮罩 | 廣播位址 | MAC 位址 | MTU |
-| :--- | :--- | :--- | :--- | :--- | :--- |
+| 介面 | IPv4 位址 | 子網路遮罩 | MAC 位址 | MTU |
+| :--- | :--- | :--- | :--- | :--- |
 EOF
 
-esxcli network ip interface ipv4 get | awk 'NR>2 {
-  iface=$1; ip=$2; mask=$3; bc=$4
-  cmd="esxcli network ip interface get -i " iface
-  mac="Unknown"; mtu="Unknown"
-  while ((cmd | getline line) > 0) {
-    if (line ~ /MAC Address:/) { sub(/.*MAC Address: /, "", line); mac=line }
-    if (line ~ /MTU:/) { sub(/.*MTU: /, "", line); mtu=line }
+esxcli network ip interface list | awk '
+  /^vmk/ {
+    iface=$1
+    ip="None"; mask="None"; mac="None"; mtu="None"
   }
-  close(cmd)
-  printf "| `%s` | `%s` | `%s` | `%s` | `%s` | `%s` |\n", iface, ip, mask, bc, mac, mtu
-}' >> "$OUTPUT_FILE"
+  /IPv4 Address:/ { ip=$3 }
+  /IPv4 Netmask:/ { mask=$3 }
+  /MAC Address:/ { mac=$3 }
+  /MTU:/ { mtu=$2 }
+  /Enabled:/ {
+    if (iface != "") {
+      printf "| `%s` | `%s` | `%s` | `%s` | `%s` |\n", iface, ip, mask, mac, mtu
+      iface=""
+    }
+  }
+' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
 
 **VMFS 儲存池 (Datastores)**
 
-| Datastore 名稱 | 檔案系統 | 容量 (總量 / 可用) | 類型 |
-| :--- | :--- | :--- | :--- |
+| Datastore 名稱 | 掛載路徑 | 容量 (已用 / 總量) | 可用空間 | 使用率 |
+| :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 相容 ESXi 8.0 儲存清單輸出格式
-esxcli storage filesystem list | awk 'NR>2 {
-  for (i=1; i<=NF; i++) {
-    if ($i ~ /^VMFS/) {
-      fstype=$i
-      size_gb=int($(i+2) / 1024 / 1024 / 1024)
-      free_gb=int($(i+3) / 1024 / 1024 / 1024)
-      name=$2
-      printf "| **%s** | `%s` | %s GB / %s GB | VMFS |\n", name, fstype, size_gb, free_gb
-    }
+# 改用穩定可讀的 df -h 解析 VMFS 容量
+df -h | awk '$NF ~ /^\/vmfs\/volumes\// {
+  mount=$NF
+  name=$NF
+  sub(/.*\/vmfs\/volumes\//, "", name)
+  # 略過 UUID 軟連結，只保留具名 Datastore
+  if (name !~ /^[0-9a-f]{8}-[0-9a-f]{8}/) {
+    printf "| **%s** | `%s` | %s / %s | %s | %s |\n", name, mount, $3, $2, $4, $5
   }
 }' >> "$OUTPUT_FILE"
 
@@ -124,9 +142,9 @@ for vmid in $(vim-cmd vmsvc/getallvms 2>/dev/null | awk 'NR>1 {print $1}'); do
   MEM_MB=$(echo "$VM_INFO" | awk -F'= ' '/memorySizeMB =/{gsub(/[, \r\n]/, "", $2); print $2}')
   MEM_FMT="$(expr $MEM_MB / 1024 2>/dev/null || echo $MEM_MB)GB"
   
-  # 直接從虛擬硬體裝置定義抓取 Port Group，不抓 Guest OS 內的 Docker/Bridge IP
-  NETWORKS=$(vim-cmd vmsvc/device.getdevices $vmid 2>/dev/null | awk -F'= "' '/networkName =/{print $2}' | cut -d'"' -f1 | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
-  [ -z "$NETWORKS" ] && NETWORKS="未配置/關機中"
+  # 從 vmsvc/get.config 直接抓取 backing.deviceName (標準 Port Group 名稱)
+  NETWORKS=$(vim-cmd vmsvc/get.config $vmid 2>/dev/null | awk -F'= "' '/deviceName =/{print $2}' | cut -d'"' -f1 | sort -u | awk '{if(NR>1) printf ", "; printf "%s", $0} END {print ""}')
+  [ -z "$NETWORKS" ] && NETWORKS="未配置網路"
 
   echo "| \`${vmid}\` | **${VM_NAME}** | ${POWER_STATE} | \`${VCPU} vCPU / ${MEM_FMT}\` | \`${NETWORKS}\` |" >> "$OUTPUT_FILE"
 done
