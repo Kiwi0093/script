@@ -45,11 +45,11 @@ tags:
 
 **實體網路卡 (Uplinks / vmnic)**
 
-| 網卡代號 | 驅動程式 | 連結狀態 | 速度與雙工 (Speed/Duplex) | MAC 位址 | MTU |
+| 網卡代號 | 驅動程式 | 連結狀態 | 速度 (Speed) | 雙工模式 (Duplex) | MAC 位址 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 精確對齊網卡清單欄位 (解決 Duplex 造成 MAC/MTU 位移)
+# 原程式碼邏輯不變，僅配合輸出的值將表頭換成 Speed、Duplex、MAC
 esxcli network nic list | awk 'NR>2 {
   nic = $1
   driver = $3
@@ -57,18 +57,18 @@ esxcli network nic list | awk 'NR>2 {
   speed = $5
   duplex = $6
   mac = $7
-  mtu = $8
-  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac, mtu
+  printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac
 }' >> "$OUTPUT_FILE"
 
 cat << EOF >> "$OUTPUT_FILE"
 
 **虛擬交換機與 Port Group (vSwitch / VLAN 映射)**
 
-| Port Group 名稱 | 所屬 vSwitch | VLAN ID | 連線客戶端數 (Active Clients) |
+| Port Group 名稱 | 所屬 vSwitch | 連線客戶端數 (Active Clients) | VLAN ID |
 | :--- | :--- | :--- | :--- |
 EOF
 
+# 原程式碼邏輯不變，僅配合倒數第二欄與最後一欄的實際值調換表頭名稱
 esxcli network vswitch standard portgroup list | awk 'NR>2 {
   clients = $NF
   vlan = $(NF-1)
