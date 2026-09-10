@@ -49,16 +49,16 @@ tags:
 | :--- | :--- | :--- | :--- | :--- | :--- |
 EOF
 
-# 使用 CSV 格式精準提取各欄位，徹底解決空格切分錯誤
+# 依實測輸出順序對齊：$1為網卡、$3為驅動、$5為狀態、$6為速度、$7為雙工、$8為MAC、$9為MTU
 esxcli --formatter=csv network nic list | awk -F',' 'NR>1 {
   for (i=1; i<=NF; i++) gsub(/^"|"$/, "", $i)
-  nic = $NF
+  nic = $1
   driver = $3
-  link = $1
-  duplex = $4
+  link = $5
   speed = $6
-  mac = $7
-  mtu = $8
+  duplex = $7
+  mac = $8
+  mtu = $9
   printf "| `%s` | `%s` | %s | %s %s | `%s` | `%s` |\n", nic, driver, link, speed, duplex, mac, mtu
 }' >> "$OUTPUT_FILE"
 
